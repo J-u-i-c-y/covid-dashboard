@@ -1,0 +1,66 @@
+@function rem($pixels) {
+  @return #{$pixels / 16px}rem;
+}
+
+@function calcsum($x, $y) {
+  @return ($x + $y) + px;
+}
+
+@mixin mq($from, $to: false) {
+  @if $to {
+    @media (min-width: #{$from}px) and (max-width: #{$to}px) {
+      @content;
+    }
+  }
+
+  @else {
+    @media (max-width: #{$from}px) {
+      @content;
+    }
+  }
+}
+
+%dib {
+  display: inline-block;
+  vertical-align: top;
+}
+
+// @extend %dib;
+
+%posa {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+%dfc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+%dffs {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+%dffe {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+%dfsb {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+%dfsa {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}

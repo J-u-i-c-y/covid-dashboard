@@ -1,0 +1,13 @@
+@import "../../assets/scss/common/mixins.scss";
+@import "../../assets/scss/common/vars.scss";
+
+.current {
+  height: calc(100% - 300px);
+  background-color: rgba($purple-color, .1);
+  color: darken($primary-color, 10%);
+
+  &__container {
+    @extend %dfc;
+    height: 100%;
+  }
+}

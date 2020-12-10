@@ -1,39 +1,28 @@
 @import "../../assets/scss/common/mixins.scss";
 @import "../../assets/scss/common/vars.scss";
 
-.App {
-  text-align: center;
+.app {
+  position: relative;
 
-  &-logo {
-    height: 40vmin;
-    pointer-events: none;
-
-    @media (prefers-reduced-motion: no-preference) {
-      animation: App-logo-spin infinite 20s linear;
-    }
-  }
-
-  &-header {
-    background-color: #282c34;
-    min-height: 100vh;
+  &__main {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+    height: calc(100vh - 80px);
   }
 
-  &-link {
-    color: $primary-color;
+  &__col {
+    height: 100%;
+    border: 1px solid red;
   }
-}
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+  &__col--first {
+    flex-basis: 300px;
   }
-  to {
-    transform: rotate(360deg);
+
+  &__col--second {
+    flex-basis: calc(100% - 700px);
+  }
+
+  &__col--third {
+    flex-basis: 400px;
   }
 }

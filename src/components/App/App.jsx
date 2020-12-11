@@ -11,20 +11,17 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      hello: 'Hello World',
-      data: {},
       allHuman: 5598034,
       country: 'Belarus!!!'
     };
-    this.getApiData()
   }
 
-  getApiData() {
+  componentDidMount() {
     fetch('https://api.covid19api.com/')
       .then(response => response.json())
       .then(data => {
-        Object.assign(this.state.data, data)
-        console.log(this.state)
+        this.setState({data});
+        console.log(this.state);
       })
   }
 

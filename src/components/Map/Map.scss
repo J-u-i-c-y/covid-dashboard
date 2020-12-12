@@ -1,0 +1,13 @@
+@import "../../assets/scss/common/mixins.scss";
+@import "../../assets/scss/common/vars.scss";
+
+.map {
+  height: 100%;
+  background-color: rgba($purple-color, .1);
+  color: #000;
+
+  &__container {
+    @extend %dfc;
+    height: 100%;
+  }
+}

@@ -19,7 +19,7 @@ class Informer extends Component {
 }
 
 Informer.propTypes = {
-  count: PropTypes.string.isRequired,
+  count: PropTypes.number.isRequired,
 };
 
 export default Informer;

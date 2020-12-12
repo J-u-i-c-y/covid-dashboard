@@ -2,18 +2,17 @@ import React, { Component } from 'react';
 import './Charts.scss';
 
 class Charts extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      count: props.count,
-    };
+  constructor() {
+    super();
+    this.title = 'Charts';
   }
 
   render() {
+    const { title } = this.title;
     return (
       <div className="charts">
         <div className="charts__container">
-          <p>Charts</p>
+          <p>{title}</p>
         </div>
       </div>
     );

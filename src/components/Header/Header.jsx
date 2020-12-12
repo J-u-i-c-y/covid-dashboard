@@ -11,15 +11,18 @@ class Header extends Component {
   }
 
   render() {
+    const { appTitle } = this.state;
     return (
       <header className="header">
         <div className="header__container">
           <div className="header__logo">
-            <img src={rsLogo} className="header__logo-img" alt="RS School logotype" />
+            <img
+              src={rsLogo}
+              className="header__logo-img"
+              alt="RS School logotype"
+            />
           </div>
-          <div className="header__title">
-            {this.state.appTitle}
-          </div>
+          <div className="header__title">{appTitle}</div>
         </div>
       </header>
     );

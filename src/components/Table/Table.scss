@@ -1,0 +1,14 @@
+@import "../../assets/scss/common/mixins.scss";
+@import "../../assets/scss/common/vars.scss";
+
+.table {
+  height: calc(100% - 150px);
+  background-color: rgba($purple-color, .1);
+  color: darken($primary-color, 30%);
+
+  &__container {
+    height: 100%;
+    padding: 30px 20px;
+    text-align: center;
+  }
+}

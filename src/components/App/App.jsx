@@ -17,13 +17,13 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch('https://api.covid19api.com/')
-      .then((response) => response.json())
-      .then((data) => {
-        this.setState({ data });
-        // eslint-disable-next-line no-console
-        console.log(this.state);
-      });
+    // fetch('https://api.covid19api.com/')
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     this.setState({ data });
+    //     // eslint-disable-next-line no-console
+    //     console.log(this.state);
+    //   });
   }
 
   render() {

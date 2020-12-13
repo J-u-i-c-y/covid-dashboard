@@ -6,9 +6,17 @@
   border: 1px solid $neutral-placeholder;
   box-shadow: 0 0 5px 1px $neutral-placeholder;
   padding: 4px 0;
+  background: #eee;
 
   &__menu {
+    position: relative;
 
+    &.is-open {
+
+      .module-nav__menu-dropdown {
+        max-height: 200px;
+      }
+    }
   }
 
   &__menu-icon {
@@ -16,21 +24,46 @@
   }
 
   &__menu-dropdown {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    min-width: 200px;
+    max-height: 0;
+    overflow: hidden;
+    background: #eee;
+    border: 1px solid $neutral-placeholder;
+    transition: max-height .3s ease-in-out;
+  }
 
+  &__menu-list {
+    padding: 10px;
+    text-align: left;
   }
 
   &__menu-item {
+    padding: 0 0 10px 20px;
 
+    &:not(.is-current) {
+      cursor: pointer;
+    }
+
+    &.is-current {
+      position: relative;
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 15px;
+        height: 20px;
+        @extend %dfc;
+        background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAAM1BMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACjBUbJAAAAEHRSTlMAK0BUVVZXW1x3fX+AiPv8+cpuIwAAAEdJREFUeNrNzMUBwDAMA0CFOfH+y5a5/hbuZ5DwNwI8VQv4PaU399FgYitlHEiqhtsDgZoDNNM/XDy3BzLVW8+aoQRWzviPHhpKAukSbXdNAAAAAElFTkSuQmCC) center center no-repeat;
+      }
+    }
   }
 
   &__full {
 
-    button {
-      border: none;
-      outline: none;
-      background: inherit;
-      cursor: pointer;
-
-    }
   }
 }

@@ -7,7 +7,17 @@ class Table extends Component {
     super(props);
     this.state = {
       containerClassName: '',
+      navItems: ['Show params 1', 'Show params 2', 'Show params 3'],
+      navCurrentItem: 0,
     };
+    this.toggleContainerClassName = this.toggleContainerClassName.bind(this);
+    this.toggleNavItem = this.toggleNavItem.bind(this);
+  }
+
+  toggleNavItem(id) {
+    this.setState({ navCurrentItem: id });
+    // eslint-disable-next-line no-console
+    console.log('current nav-item is: ', id);
   }
 
   toggleContainerClassName(param) {
@@ -15,11 +25,16 @@ class Table extends Component {
   }
 
   render() {
-    const { containerClassName } = this.state;
+    const { containerClassName, navItems, navCurrentItem } = this.state;
     return (
       <div className="table">
         <div className={`table__container ${containerClassName}`}>
-          <ModuleNav changeFullWin={this.toggleContainerClassName} />
+          <ModuleNav
+            navItems={navItems}
+            currentItem={navCurrentItem}
+            toggleNavItem={this.toggleNavItem}
+            toggleFullWin={this.toggleContainerClassName}
+          />
           <p>Table</p>
         </div>
       </div>

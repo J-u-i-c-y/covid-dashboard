@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './ModuleNav.scss';
 import sprite from '../../../assets/images/sprite.svg';
-import MobileNavMenuItem from '../ModuleNavMenuItem/ModuleNavMenuItem';
 
 class ModuleNav extends Component {
   constructor(props) {
@@ -13,7 +12,6 @@ class ModuleNav extends Component {
       menuIsOpen: false,
       nuvCurrentItems: navCurrentItems,
     };
-    this.toggleCurrentMenuItem = this.toggleCurrentMenuItem.bind(this);
   }
 
   componentDidMount() {
@@ -54,20 +52,46 @@ class ModuleNav extends Component {
     const fullIcon = isFull ? '#open-full' : '#close-full';
     const menuWrapperClassName = menuIsOpen ? 'is-open' : '';
     const { navItems } = this.props;
-    const menuList = (groupe, groupId) => {
-      return groupe.map((el, id) => (
-        <MobileNavMenuItem
-          el={el}
-          id={id}
-          groupId={groupId}
-          nuvCurrentItems={nuvCurrentItems}
-          toggleCurrentMenuItem={this.toggleCurrentMenuItem}
-        />
-      ));
+    const menuItem = (el, id, groupId) => {
+      return (
+        <li
+          className={`module-nav__menu-item ${
+            id === nuvCurrentItems[groupId] ? 'is-current' : ''
+          }`}
+          key={`${id + 1}-${groupId + 1}`.toString()}
+        >
+          <button
+            type="button"
+            onClick={this.toggleCurrentMenuItem.bind(this, id, groupId)}
+          >
+            {el}
+          </button>
+        </li>
+      );
     };
-    const menuListContent = navItems.map((groupe, groupId) => (
-      <ul className="module-nav__menu-list" key={`--${groupId}`.toString()}>
-        {menuList(groupe, groupId)}
+    const separatorItem = (id, groupId) => {
+      return (
+        <li
+          className={
+            ('module-nav__menu-item', 'module-nav__menu-item--separator')
+          }
+          key={`${id + 1}-${groupId + 1}`.toString()}
+        />
+      );
+    };
+    const createOneListInnerContent = (el, id, groupId) => {
+      return el === 'separator'
+        ? separatorItem(id, groupId)
+        : menuItem(el, id, groupId);
+    };
+    const menuOneList = (groupe, groupId) =>
+      groupe.map((el, id) => createOneListInnerContent(el, id, groupId));
+    const menuNavListsContent = navItems.map((groupe, groupId) => (
+      <ul
+        className="module-nav__menu-list"
+        key={`unic-menu-list-${groupId + 1}`}
+      >
+        {menuOneList(groupe, groupId)}
       </ul>
     ));
     return (
@@ -80,7 +104,7 @@ class ModuleNav extends Component {
               </svg>
             </button>
           </div>
-          <div className="module-nav__menu-dropdown">{menuListContent}</div>
+          <div className="module-nav__menu-dropdown">{menuNavListsContent}</div>
         </div>
         <div className="module-nav__full">
           <button type="button" onClick={this.toggleFullWin.bind(this)}>

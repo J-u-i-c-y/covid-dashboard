@@ -1,30 +1,18 @@
-import React, { Component } from 'react';
+import React from 'react';
+import GlobalParent from '../GlobalParent/GlobalParent';
 import './Table.scss';
 import ModuleNav from '../../Elements/ModuleNav/ModuleNav';
 
-class Table extends Component {
+class Table extends GlobalParent {
   constructor(props) {
     super(props);
     this.state = {
-      containerClassName: '',
       navItems: [
         ['За последний день', 'За весь период пандемии'],
         ['В абсолютных величинах', 'На 100 тыс. населения'],
       ],
       navCurrentItems: [0, 0],
     };
-    this.toggleContainerClassName = this.toggleContainerClassName.bind(this);
-    this.toggleNavItem = this.toggleNavItem.bind(this);
-  }
-
-  toggleNavItem(data) {
-    this.setState({ navCurrentItems: data });
-    // eslint-disable-next-line no-console
-    console.log('current nav-item is: ', data);
-  }
-
-  toggleContainerClassName(param) {
-    this.setState({ containerClassName: param ? 'is-open-full' : '' });
   }
 
   render() {

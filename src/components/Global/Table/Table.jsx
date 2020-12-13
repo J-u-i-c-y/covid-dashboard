@@ -25,6 +25,7 @@ class Table extends GlobalParent {
             navCurrentItems={navCurrentItems}
             toggleNavItem={this.toggleNavItem}
             toggleFullWin={this.toggleContainerClassName}
+            idx="tableNav"
           />
           <p>Table</p>
         </div>

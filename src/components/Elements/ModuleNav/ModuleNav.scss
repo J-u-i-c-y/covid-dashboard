@@ -3,9 +3,11 @@
 
 .module-nav {
   @extend %dfsb;
+  width: 100%;
+  padding: 4px 0;
+  margin: 0 0 auto;
   border: 1px solid $neutral-placeholder;
   box-shadow: 0 0 5px 1px $neutral-placeholder;
-  padding: 4px 0;
   background: #eee;
 
   &__menu {

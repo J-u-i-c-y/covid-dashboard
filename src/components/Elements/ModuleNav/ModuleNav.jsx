@@ -34,6 +34,19 @@ class ModuleNav extends Component {
   toggleMenu() {
     const { menuIsOpen } = this.state;
     this.setState({ menuIsOpen: !menuIsOpen });
+    if (!menuIsOpen) {
+      window.addEventListener('click', this.closeMenu.bind(this));
+    } else {
+      window.removeEventListener('click', this.closeMenu.bind(this));
+    }
+  }
+
+  closeMenu(e) {
+    const { idx } = this.props;
+    if (!e.target.closest(`#${idx}`)) {
+      this.setState({ menuIsOpen: false });
+      window.removeEventListener('click', this.closeMenu.bind(this));
+    }
   }
 
   toggleCurrentMenuItem(id, groupId) {
@@ -51,7 +64,7 @@ class ModuleNav extends Component {
     const { isFull, menuIsOpen, nuvCurrentItems } = this.state;
     const fullIcon = isFull ? '#open-full' : '#close-full';
     const menuWrapperClassName = menuIsOpen ? 'is-open' : '';
-    const { navItems } = this.props;
+    const { navItems, idx } = this.props;
     const menuItem = (el, id, groupId) => {
       return (
         <li
@@ -95,7 +108,7 @@ class ModuleNav extends Component {
       </ul>
     ));
     return (
-      <div className="module-nav">
+      <div className="module-nav" id={idx}>
         <div className={`module-nav__menu ${menuWrapperClassName}`}>
           <div className="module-nav__menu-icon">
             <button type="button" onClick={this.toggleMenu.bind(this)}>
@@ -123,6 +136,7 @@ ModuleNav.propTypes = {
   navItems: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
   toggleNavItem: PropTypes.func.isRequired,
   navCurrentItems: PropTypes.arrayOf(PropTypes.number).isRequired,
+  idx: PropTypes.string.isRequired,
 };
 
 export default ModuleNav;

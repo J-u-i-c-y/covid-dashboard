@@ -6,7 +6,10 @@
   color: $primary-color;
 
   &__container {
-    @extend %dfc;
-    height: 300px;
+    padding: 5px;
+
+    &:not(.is-open-full) {
+      height: 300px;
+    }
   }
 }

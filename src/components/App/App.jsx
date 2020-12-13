@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import './App.scss';
-import Header from '../Header/Header';
-import Informer from '../Informer/Informer';
-import Table from '../Table/Table';
-import Map from '../Map/Map';
-import Current from '../Current/Current';
-import Charts from '../Charts/Charts';
+import Header from '../Global/Header/Header';
+import Informer from '../Global/Informer/Informer';
+import Table from '../Global/Table/Table';
+import Map from '../Global/Map/Map';
+import Current from '../Global/Current/Current';
+import Charts from '../Global/Charts/Charts';
 
 class App extends Component {
   constructor(props) {

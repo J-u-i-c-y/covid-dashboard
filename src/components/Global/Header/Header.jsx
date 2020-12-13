@@ -6,7 +6,7 @@ class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      appTitle: 'Hello World',
+      appTitle: 'COVID-19 Dashboard by the Center for Systems Science and Engineering (CSSE) at Johns Hopkins University (JHU)',
     };
   }
 

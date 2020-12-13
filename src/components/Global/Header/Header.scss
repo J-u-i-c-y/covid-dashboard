@@ -11,6 +11,10 @@
     max-width: calc(100% - 60px);
     height: 80px;
     margin: 0 auto;
+
+    @include mq(1280) {
+      height: 60px;
+    }
   }
 
   &__logo {
@@ -20,5 +24,19 @@
 
   &__logo-img {
     width: 100px;
+  }
+
+  &__title {
+    text-align: right;
+
+    @include mq(1024) {
+      padding: 0 0 0 30px;
+      font-size: 15px;
+    }
+
+    @include mq(768) {
+      padding: 0 0 0 20px;
+      font-size: 14px;
+    }
   }
 }

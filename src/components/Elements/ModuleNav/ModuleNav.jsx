@@ -2,16 +2,25 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './ModuleNav.scss';
 import sprite from '../../../assets/images/sprite.svg';
+import MobileNavMenuItem from '../ModuleNavMenuItem/ModuleNavMenuItem';
 
 class ModuleNav extends Component {
   constructor(props) {
     super(props);
-    const { currentItem } = this.props;
+    const { navCurrentItems } = this.props;
     this.state = {
       isFull: true,
       menuIsOpen: false,
-      menuCurrentItem: currentItem,
+      nuvCurrentItems: navCurrentItems,
     };
+    this.toggleCurrentMenuItem = this.toggleCurrentMenuItem.bind(this);
+  }
+
+  componentDidMount() {
+    const { navItems } = this.props;
+    navItems.forEach((group, groupId) => {
+      if (groupId < group.length - 1) group.push('separator');
+    });
   }
 
   toggleFullWin() {
@@ -29,35 +38,37 @@ class ModuleNav extends Component {
     this.setState({ menuIsOpen: !menuIsOpen });
   }
 
-  toggleCurrentMenuItem(id) {
-    const { menuIsOpen, menuCurrentItem } = this.state;
+  toggleCurrentMenuItem(id, groupId) {
+    const { menuIsOpen, nuvCurrentItems } = this.state;
+    nuvCurrentItems[groupId] = id;
     this.setState({
       menuIsOpen: !menuIsOpen,
-      menuCurrentItem: id,
+      nuvCurrentItems,
     });
     const { toggleNavItem } = this.props;
-    toggleNavItem(menuCurrentItem);
+    toggleNavItem(nuvCurrentItems);
   }
 
   render() {
-    const { isFull, menuIsOpen, menuCurrentItem } = this.state;
+    const { isFull, menuIsOpen, nuvCurrentItems } = this.state;
     const fullIcon = isFull ? '#open-full' : '#close-full';
     const menuWrapperClassName = menuIsOpen ? 'is-open' : '';
     const { navItems } = this.props;
-    const menuListContent = navItems.map((el, id) => (
-      <li
-        className={`module-nav__menu-item ${
-          id === menuCurrentItem ? 'is-current' : ''
-        }`}
-        key={id.toString()}
-      >
-        <button
-          type="button"
-          onClick={this.toggleCurrentMenuItem.bind(this, id)}
-        >
-          {el}
-        </button>
-      </li>
+    const menuList = (groupe, groupId) => {
+      return groupe.map((el, id) => (
+        <MobileNavMenuItem
+          el={el}
+          id={id}
+          groupId={groupId}
+          nuvCurrentItems={nuvCurrentItems}
+          toggleCurrentMenuItem={this.toggleCurrentMenuItem}
+        />
+      ));
+    };
+    const menuListContent = navItems.map((groupe, groupId) => (
+      <ul className="module-nav__menu-list" key={`--${groupId}`.toString()}>
+        {menuList(groupe, groupId)}
+      </ul>
     ));
     return (
       <div className="module-nav">
@@ -69,9 +80,7 @@ class ModuleNav extends Component {
               </svg>
             </button>
           </div>
-          <div className="module-nav__menu-dropdown">
-            <ul className="module-nav__menu-list">{menuListContent}</ul>
-          </div>
+          <div className="module-nav__menu-dropdown">{menuListContent}</div>
         </div>
         <div className="module-nav__full">
           <button type="button" onClick={this.toggleFullWin.bind(this)}>
@@ -87,13 +96,9 @@ class ModuleNav extends Component {
 
 ModuleNav.propTypes = {
   toggleFullWin: PropTypes.func.isRequired,
-  navItems: PropTypes.arrayOf(PropTypes.string).isRequired,
+  navItems: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
   toggleNavItem: PropTypes.func.isRequired,
-  currentItem: PropTypes.number,
-};
-
-ModuleNav.defaultProps = {
-  currentItem: 0,
+  navCurrentItems: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 export default ModuleNav;

@@ -1,0 +1,36 @@
+@import "../../../assets/scss/common/mixins.scss";
+@import "../../../assets/scss/common/vars.scss";
+
+.module-nav {
+  @extend %dfsb;
+  border: 1px solid $neutral-placeholder;
+  box-shadow: 0 0 5px 1px $neutral-placeholder;
+  padding: 4px 0;
+
+  &__menu {
+
+  }
+
+  &__menu-icon {
+    cursor: pointer;
+  }
+
+  &__menu-dropdown {
+
+  }
+
+  &__menu-item {
+
+  }
+
+  &__full {
+
+    button {
+      border: none;
+      outline: none;
+      background: inherit;
+      cursor: pointer;
+
+    }
+  }
+}

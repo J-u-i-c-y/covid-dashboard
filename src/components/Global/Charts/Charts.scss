@@ -1,0 +1,15 @@
+@import "../../../assets/scss/common/mixins.scss";
+@import "../../../assets/scss/common/vars.scss";
+
+.charts {
+  background-color: rgba($purple-color, .3);
+  color: $primary-color;
+
+  &__container {
+    padding: 5px;
+
+    &:not(.is-open-full) {
+      height: 300px;
+    }
+  }
+}

@@ -1,0 +1,20 @@
+@import "../../../assets/scss/common/mixins.scss";
+@import "../../../assets/scss/common/vars.scss";
+
+.table {
+  height: calc(100% - 150px);
+  border: 1px solid #ddd;
+
+  &__container {
+    height: 100%;
+    padding: 5px 5px 10px;
+    background-color: rgba($purple-color, .1);
+    color: darken($primary-color, 30%);
+    text-align: center;
+    transition: background-color .3s ease-in-out;
+
+    &.is-open-full {
+      background-color: $neutral-placeholder;
+    }
+  }
+}

@@ -7,22 +7,72 @@
   &__main {
     display: flex;
     height: calc(100vh - 80px);
+
+    @include mq(1024) {
+      flex-wrap: wrap;
+      height: auto;
+    }
   }
 
   &__col {
     height: 100%;
     border: 1px solid red;
+
+    @include mq(1024) {
+      height: auto;
+    }
   }
 
   &__col--first {
     flex-basis: 300px;
+
+    @include mq(1280) {
+      flex-basis: 220px;
+    }
+
+    @include mq(1024) {
+      flex-basis: 280px;
+      height: 600px;
+    }
+
+    @include mq(768) {
+      flex-basis: 100%;
+      height: auto;
+    }
   }
 
   &__col--second {
     flex-basis: calc(100% - 700px);
+
+    @include mq(1280) {
+      flex-basis: calc(100% - 500px);
+    }
+
+    @include mq(1024) {
+      flex-basis: calc(100% - 280px);
+      height: 600px;
+    }
+
+    @include mq(768) {
+      flex-basis: 100%;
+      height: 65vw;
+    }
   }
 
   &__col--third {
     flex-basis: 400px;
+
+    @include mq(1280) {
+      flex-basis: 280px;
+    }
+
+    @include mq(1024) {
+      flex-basis: 100%;
+      height: 600px;
+    }
+
+    @include mq(768) {
+      height: auto;
+    }
   }
 }

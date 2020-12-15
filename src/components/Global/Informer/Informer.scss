@@ -6,7 +6,7 @@
   color: $primary-color;
 
   &__container {
-    @extend %dfc;
     height: 150px;
+    text-align: center;
   }
 }

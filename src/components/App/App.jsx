@@ -6,24 +6,25 @@ import Table from '../Table/Table';
 import Map from '../Map/Map';
 import Current from '../Current/Current';
 import Charts from '../Charts/Charts';
+import Covid19DataAPI from '../../services/Covid19DataAPI';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      count: 5598034,
+      count: 0,
       country: 'Belarus!!!',
+      totalDeaths: 0,
     };
+    this.covidDataAPI = new Covid19DataAPI();
   }
 
   componentDidMount() {
-    // fetch('https://api.covid19api.com/')
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     this.setState({ data });
-    //     // eslint-disable-next-line no-console
-    //     console.log(this.state);
-    //   });
+    this.covidDataAPI.getGlobalStatistic()
+      .then((data) => {
+        this.setState({ data });
+
+      });
   }
 
   render() {

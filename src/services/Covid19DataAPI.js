@@ -1,9 +1,9 @@
-import React from 'react';
+import axios from 'axios';
 
-export default class Covid19DataAPI {
+class Covid19DataAPI {
     constructor() {
-        this._covid_data = axios({
-            baseURL: 'https://api.covid19.com',
+        this._covid_data = axios.create({
+            baseURL: 'https://api.covid19api.com',
         });
     }
 
@@ -16,10 +16,12 @@ export default class Covid19DataAPI {
     async getGlobalStatistic() {
         const summary = await this._getSummary();
 
-        return summary.Global;
+        return summary.data.Global;
     }
 
     async _getSummary() {
-        return this._covid_data.get('/summary');
+        return this._covid_data.get('/summary')
     }
 }
+
+export default Covid19DataAPI;

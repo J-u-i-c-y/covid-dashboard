@@ -6,8 +6,7 @@
   background-color: rgba($purple-color, .1);
   color: #000;
 
-  &__container {
-    @extend %dfc;
+  .leaflet-container {
     height: 100%;
   }
 }

@@ -21,15 +21,37 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.covidDataAPI.getGlobalStatistic().then((data) => {
+    this.covidDataAPI.getSummaryWorld().then((data) => {
       // eslint-disable-next-line no-console
       console.log(data);
       this.setState({
-        totalDeaths: data.TotalDeaths,
-        totalConfirmed: data.TotalConfirmed,
-        totalRecovered: data.TotalRecovered,
+        totalDeaths: data.deaths,
+        totalConfirmed: data.active,
+        totalRecovered: data.recovered,
       });
     });
+
+    this.covidDataAPI
+      .getCountryList()
+      .then((data) => {
+        // eslint-disable-next-line no-console
+        console.log('getCountryList', data);
+        this.setState({
+          countries: data,
+        });
+
+        const afg = this.covidDataAPI.getOneCountryData(this.state.countries[0].countryInfo.iso3)
+        afg.then((data) => {
+          console.log('afg', data);
+        })
+      })
+
+    this.covidDataAPI
+      .getHistoryGlobal()
+      .then((resp) => {
+        console.log('getHistoryGlobal', resp);
+      })
+
   }
 
   render() {

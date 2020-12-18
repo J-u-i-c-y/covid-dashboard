@@ -8,12 +8,10 @@ import Current from '../Global/Current/Current';
 import Charts from '../Global/Charts/Charts';
 import Covid19DataAPI from '../../services/Covid19DataAPI';
 
-
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      countries: [],
       country: 'Belarus!!!',
       totalConfirmed: 0,
       totalDeaths: 0,
@@ -23,36 +21,38 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.covidDataAPI.getGlobalStatistic().then((data) => {
+    this.covidDataAPI.getSummaryWorld().then((data) => {
       // eslint-disable-next-line no-console
       console.log(data);
       this.setState({
-        totalDeaths: data.TotalDeaths,
-        totalConfirmed: data.TotalConfirmed,
-        totalRecovered: data.TotalRecovered,
+        totalDeaths: data.deaths,
+        totalConfirmed: data.active,
+        totalRecovered: data.recovered,
       });
     });
 
-    this.covidDataAPI.getCountryList().then((list) => {
-      // eslint-disable-next-line no-console
-      this.setState({
-        countries: list.data
-      });
-      console.log(list.data);
-      
-      list.data.forEach((elem) => {
-        this.covidDataAPI.getCountry(elem.Slug).then((country) => {
-            console.log(elem.Slug);
-          });
+    this.covidDataAPI
+      .getCountryList()
+      .then((data) => {
+        // eslint-disable-next-line no-console
+        console.log('getCountryList', data);
+        this.setState({
+          countries: data,
+        });
+
+        const afg = this.covidDataAPI.getOneCountryData(this.state.countries[0].countryInfo.iso3)
+        afg.then((data) => {
+          console.log('afg', data);
+        })
       })
-    });
 
-    // this.covidDataAPI.getCountry().then((country) => {
-    //   console.log(country);
-    // });
+    this.covidDataAPI
+      .getHistoryGlobal()
+      .then((resp) => {
+        console.log('getHistoryGlobal', resp);
+      })
+
   }
-
-    
 
   render() {
     const { totalConfirmed, totalDeaths, totalRecovered, country } = this.state;

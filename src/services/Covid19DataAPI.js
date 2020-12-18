@@ -3,7 +3,7 @@ import axios from 'axios';
 class Covid19DataAPI {
   constructor() {
     this.covidData = axios.create({
-      baseURL: 'https://api.covid19api.com',
+      baseURL: 'https://disease.sh/v3/covid-19/',
     });
   }
 
@@ -12,21 +12,29 @@ class Covid19DataAPI {
     return summary.Countries;
   }
 
-  async getGlobalStatistic() {
-    const summary = await this.getSummary();
-    return summary.data.Global;
-  }
+  // async getGlobalStatistic() {
+  //   const summary = await this.getSummary();
+  //   return summary.data;
+  // }
 
-  async getSummary() {
-    return this.covidData.get('/summary');
+  async getSummaryWorld() {
+    const summary = await this.covidData.get('all');
+    return summary.data;
   }
 
   async getCountryList() {
-    return this.covidData.get('/countries');
+    const countryList = await this.covidData.get('countries');
+    return countryList.data;
   }
 
-  async getCountry(country) {
-    return this.covidData.get(`/country/${country}/status/confirmed`);
+  async getOneCountryData(country) {
+    const countryData = await this.covidData.get(`countries/${country}?strict=true`);
+    return countryData.data;
+  }
+
+  async getHistoryGlobal(days = 150) {
+    const historyData = await this.covidData.get(`historical/all?lastdays=${days}`);
+    return historyData.data;
   }
 }
 

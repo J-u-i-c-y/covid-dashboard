@@ -20,6 +20,14 @@ class Covid19DataAPI {
   async getSummary() {
     return this.covidData.get('/summary');
   }
+
+  async getCountryList() {
+    return this.covidData.get('/countries');
+  }
+
+  async getCountry(country) {
+    return this.covidData.get(`/country/${country}/status/confirmed`);
+  }
 }
 
 export default Covid19DataAPI;

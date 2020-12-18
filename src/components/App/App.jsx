@@ -8,10 +8,12 @@ import Current from '../Global/Current/Current';
 import Charts from '../Global/Charts/Charts';
 import Covid19DataAPI from '../../services/Covid19DataAPI';
 
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      countries: [],
       country: 'Belarus!!!',
       totalConfirmed: 0,
       totalDeaths: 0,
@@ -30,7 +32,27 @@ class App extends Component {
         totalRecovered: data.TotalRecovered,
       });
     });
+
+    this.covidDataAPI.getCountryList().then((list) => {
+      // eslint-disable-next-line no-console
+      this.setState({
+        countries: list.data
+      });
+      console.log(list.data);
+      
+      list.data.forEach((elem) => {
+        this.covidDataAPI.getCountry(elem.Slug).then((country) => {
+            console.log(elem.Slug);
+          });
+      })
+    });
+
+    // this.covidDataAPI.getCountry().then((country) => {
+    //   console.log(country);
+    // });
   }
+
+    
 
   render() {
     const { totalConfirmed, totalDeaths, totalRecovered, country } = this.state;

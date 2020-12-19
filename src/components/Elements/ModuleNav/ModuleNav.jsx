@@ -11,7 +11,8 @@ class ModuleNav extends Component {
       isFull: true,
       menuIsOpen: false,
       nuvCurrentItems: navCurrentItems,
-      openInputDropdown: false
+      openInputDropdown: false,
+      searchCountryString: ''
     };
     this.handlerInput = this.handlerInput.bind(this);
   }
@@ -63,14 +64,49 @@ class ModuleNav extends Component {
   }
 
   handlerInput = (event) => {
-    console.log(event.target.value);
+    const searchCountryString = event.target.value
     this.setState({
-      openInputDropdown: true
-    })
+      searchCountryString: searchCountryString.toLowerCase()
+    });
+    if (searchCountryString === '') {
+      this.toggleInputDropdown(false);
+    } else if (!this.state.openInputDropdown) {
+      this.toggleInputDropdown(true);
+    }
   };
 
+  handlerInputKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      const currentList = this.getCurrentListCountries();
+      if (currentList.length > 0) this.changeCurrentCountry(currentList[0]);
+    }
+  }
+
+  toggleInputDropdown = (data) => {
+    this.setState({
+      openInputDropdown: data
+    })
+    if (!data) {
+      this.setState({
+        searchCountryString: ''
+      });
+    }
+  };
+
+  getCurrentListCountries = () => {
+    const { searchCountryString } = this.state;
+    const { countries } = this.props;
+    return countries.filter((el) => el.country.toLowerCase().includes(searchCountryString));
+  }
+
+  changeCurrentCountry(country) {
+    this.toggleInputDropdown(false);
+    const { cbChangeCurrentCountry } = this.props;
+    cbChangeCurrentCountry(country)
+  }
+
   render() {
-    const { isFull, menuIsOpen, nuvCurrentItems, openInputDropdown } = this.state;
+    const { isFull, menuIsOpen, nuvCurrentItems, openInputDropdown, searchCountryString } = this.state;
     const fullIcon = isFull ? '#open-full' : '#close-full';
     const menuWrapperClassName = menuIsOpen ? 'is-open' : '';
     const inputDropdownClassName = openInputDropdown ? 'is-open' : '';
@@ -117,6 +153,22 @@ class ModuleNav extends Component {
         {menuOneList(groupe, groupId)}
       </ul>
     ));
+    const getListOfCountries = () => {
+      const currentList = this.getCurrentListCountries()
+      if (currentList.length > 0) {
+        return currentList.map((item, i) => (
+          <div
+            className="module-nav__input-dropdown_item"
+            onClick={this.changeCurrentCountry.bind(this, item)}
+            key={item.country}
+          >
+            {item.country}
+          </div>
+        ));
+      } else {
+        return <div>No countryes found.</div>
+      }
+    };
     return (
       <div className="module-nav" id={idx}>
         <div className={`module-nav__menu ${menuWrapperClassName}`}>
@@ -131,8 +183,18 @@ class ModuleNav extends Component {
         </div>
         {hasInput &&
           <div className="module-nav__input-wrap">
-            <input type="test" placeholder="Search country" onInput={this.handlerInput}/>
-            <div className={`module-nav__input-dropdown ${inputDropdownClassName}`} ></div>
+            <input
+              type="test"
+              placeholder="Search country"
+              value={searchCountryString}
+              onChange={this.handlerInput}
+              onKeyDown={this.handlerInputKeyDown}
+            />
+            <div className={`module-nav__input-dropdown ${inputDropdownClassName}`}>
+              <div className="module-nav__input-dropdown_inner">
+                {getListOfCountries()}
+              </div>
+            </div>
           </div>
         }
         <div className="module-nav__full">

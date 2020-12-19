@@ -20,9 +20,17 @@ class Table extends GlobalParent {
     toggleCurrentCountry(country)
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const { country } = this.props;
+    if (prevProps.country !== country) {
+      const elem = document.querySelector(`#${country.countryInfo.iso3}`);
+      if (elem) elem.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+
   render() {
     const { containerClassName, navItems, navCurrentItems } = this.state;
-    const { countries } = this.props;
+    const { countries, country } = this.props;
 
     const getCurrentCases = item => {
       let res = 0
@@ -54,10 +62,17 @@ class Table extends GlobalParent {
       return res.toLocaleString()
     }
 
+    const getCountryRowClassName = (nameCountry) => country.country === nameCountry ? 'is-current' : null;
+
     const getTableContent = countries => {
       const keySort = navCurrentItems[1] !== 1 ? 'cases' : 'casesPerOneMillion'
       return countries.sort((a, b) => b[keySort] - a[keySort]).map(item => (
-        <tr key={item.country} onClick={this.clickByCountry.bind(this, item.country)}>
+        <tr
+          id={item.countryInfo.iso3}
+          className={getCountryRowClassName(item.country)}
+          onClick={this.clickByCountry.bind(this, item)}
+          key={item.country}
+        >
           <td>
             <span className="table__flag if-open-full">
               <img src={item.countryInfo.flag} alt="" />

@@ -19,7 +19,7 @@ class GlobalParent extends Component {
   toggleNavItem(data) {
     this.setState({ navCurrentItems: data });
     // eslint-disable-next-line no-console
-    console.log('current nav-item is: ', data);
+    // console.log('current nav-item is: ', data);
   }
 
   toggleContainerClassName(param) {

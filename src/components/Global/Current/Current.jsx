@@ -19,7 +19,8 @@ class Current extends GlobalParent {
 
   render() {
     const { title, containerClassName, navItems, navCurrentItems } = this.state;
-    const { country } = this.props;
+    const { country, countries, cbChangeCurrentCountry, globalWord } = this.props;
+
     return (
       <div className="current">
         <div className={`current__container ${containerClassName}`}>
@@ -29,13 +30,25 @@ class Current extends GlobalParent {
             toggleNavItem={this.toggleNavItem}
             toggleFullWin={this.toggleContainerClassName}
             idx="currentNav"
+            countries={countries}
             hasInput={true}
+            cbChangeCurrentCountry={cbChangeCurrentCountry}
           />
-          <h4>{title}</h4>
-          <p>
-            Current country is:&nbsp;
-            {country}
-          </p>
+          <h4>{title}: {country.country || 'Global'}</h4>
+          <div className="current__table">
+            <div className="current__row">
+              количество случаев заболевания:&nbsp;
+              {(country.cases || globalWord.cases || 0).toLocaleString()}
+            </div>
+            <div className="current__row">
+              количество летальных исходов:&nbsp;
+              {(country.deaths || globalWord.deaths || 0).toLocaleString()}
+            </div>
+            <div className="current__row">
+              количество выздоровевших:&nbsp;
+              {(country.recovered || globalWord.recovered || 0).toLocaleString()}
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -43,7 +56,7 @@ class Current extends GlobalParent {
 }
 
 Current.propTypes = {
-  country: PropTypes.string.isRequired,
+  country: PropTypes.object,
 };
 
 export default Current;

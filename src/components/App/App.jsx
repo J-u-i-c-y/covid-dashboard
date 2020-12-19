@@ -12,11 +12,12 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      country: '',
+      country: {},
       countries: [],
       totalConfirmed: 0,
       totalDeaths: 0,
       totalRecovered: 0,
+      globalWord: {}
     };
     this.covidDataAPI = new Covid19DataAPI();
     this.toggleCurrentCountry = this.toggleCurrentCountry.bind(this)
@@ -30,6 +31,7 @@ class App extends Component {
         totalDeaths: data.deaths,
         totalConfirmed: data.active,
         totalRecovered: data.recovered,
+        globalWord: data
       });
     });
 
@@ -37,7 +39,7 @@ class App extends Component {
       .getCountryList()
       .then((data) => {
         // eslint-disable-next-line no-console
-        // console.log('getCountryList', data);
+        console.log('getCountryList', data[10]);
         this.setState({
           countries: data,
         });
@@ -63,7 +65,7 @@ class App extends Component {
   }
 
   render() {
-    const { totalConfirmed, totalDeaths, totalRecovered, country, countries } = this.state;
+    const { totalConfirmed, totalDeaths, totalRecovered, country, countries, globalWord } = this.state;
 
     return (
       <div className="app">
@@ -77,13 +79,18 @@ class App extends Component {
               totalDeaths={totalDeaths}
               totalRecovered={totalRecovered}
             />
-            <Table countries={countries} toggleCurrentCountry={this.toggleCurrentCountry} />
+            <Table country={country} countries={countries} toggleCurrentCountry={this.toggleCurrentCountry} />
           </div>
           <div className={('app__col', 'app__col--second')}>
             <Map />
           </div>
           <div className={('app__col', 'app__col--third')}>
-            <Current country={country} />
+            <Current
+              country={country}
+              countries={countries}
+              cbChangeCurrentCountry={this.toggleCurrentCountry}
+              globalWord={globalWord}
+            />
             <Charts />
           </div>
         </div>

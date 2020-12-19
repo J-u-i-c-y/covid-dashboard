@@ -14,7 +14,7 @@ class App extends Component {
     this.state = {
       country: {},
       countries: [],
-      totalConfirmed: 0,
+      totalCases: 0,
       totalDeaths: 0,
       totalRecovered: 0,
       globalWord: {}
@@ -29,7 +29,7 @@ class App extends Component {
       // console.log(data);
       this.setState({
         totalDeaths: data.deaths,
-        totalConfirmed: data.active,
+        totalCases: data.cases,
         totalRecovered: data.recovered,
         globalWord: data
       });
@@ -44,6 +44,7 @@ class App extends Component {
           countries: data,
         });
 
+        // пример запрос для одно страны
         // const afg = this.covidDataAPI.getOneCountryData(this.state.countries[0].countryInfo.iso3)
         // afg.then((data) => {
         //   // console.log('afg', data);
@@ -65,7 +66,7 @@ class App extends Component {
   }
 
   render() {
-    const { totalConfirmed, totalDeaths, totalRecovered, country, countries, globalWord } = this.state;
+    const { totalCases, totalDeaths, totalRecovered, country, countries, globalWord } = this.state;
 
     return (
       <div className="app">
@@ -75,7 +76,7 @@ class App extends Component {
         <div className="app__main">
           <div className={('app__col', 'app__col--first')}>
             <Informer
-              totalConfirmed={totalConfirmed}
+              totalCases={totalCases}
               totalDeaths={totalDeaths}
               totalRecovered={totalRecovered}
             />

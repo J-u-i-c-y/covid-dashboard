@@ -2,6 +2,7 @@ import React from 'react';
 import GlobalParent from '../GlobalParent/GlobalParent';
 import './Table.scss';
 import ModuleNav from '../../Elements/ModuleNav/ModuleNav';
+import keys from '../../../constants/keys';
 
 class Table extends GlobalParent {
   constructor(props) {
@@ -32,32 +33,12 @@ class Table extends GlobalParent {
     const { containerClassName, navItems, navCurrentItems } = this.state;
     const { countries, country } = this.props;
 
-    const getCurrentCases = item => {
+    const getCurrentDataOnKeys = (item, key) => {
       let res = 0
       if (navCurrentItems[0] === 1) {
-        res = navCurrentItems[1] === 0 ? item.cases : item.casesPerOneMillion / 10
+        res = navCurrentItems[1] === 0 ? item[key] : item[keys[key][0]] / 10
       } else {
-        res = navCurrentItems[1] === 0 ? item.todayCases : (item.todayCases / item.population) * 100000
-      }
-      return res.toLocaleString()
-    }
-
-    const getCurrentDeaths = item => {
-      let res = 0
-      if (navCurrentItems[0] === 1) {
-        res = navCurrentItems[1] === 0 ? item.deaths : item.deathsPerOneMillion / 10
-      } else {
-        res = navCurrentItems[1] === 0 ? item.todayDeaths : (item.todayDeaths / item.population) * 100000
-      }
-      return res.toLocaleString()
-    }
-
-    const getCurrentRecovered = item => {
-      let res = 0
-      if (navCurrentItems[0] === 1) {
-        res = navCurrentItems[1] === 0 ? item.recovered : item.recoveredPerOneMillion / 10
-      } else {
-        res = navCurrentItems[1] === 0 ? item.todayRecovered : (item.todayRecovered / item.population) * 100000
+        res = navCurrentItems[1] === 0 ? item[keys[key][1]] : (item[keys[key][1]] / item.population) * 100000
       }
       return res.toLocaleString()
     }
@@ -79,9 +60,9 @@ class Table extends GlobalParent {
             </span>
             {item.country}
           </td>
-          <td>{getCurrentCases(item)}</td>
-          <td>{getCurrentDeaths(item)}</td>
-          <td>{getCurrentRecovered(item)}</td>
+          <td>{getCurrentDataOnKeys(item, 'cases')}</td>
+          <td>{getCurrentDataOnKeys(item, 'deaths')}</td>
+          <td>{getCurrentDataOnKeys(item, 'recovered')}</td>
         </tr>
       ));
     };

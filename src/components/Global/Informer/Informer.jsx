@@ -9,7 +9,9 @@ const Informer = (props) => {
     <div className="informer">
       <div className="informer__container">
         <div className="informer__row informer__row--center">
-          <span>{`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`}</span>
+          <span>
+            {`${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`}
+          </span>
         </div>
         <div className="informer__row">
           Total cases:&nbsp;

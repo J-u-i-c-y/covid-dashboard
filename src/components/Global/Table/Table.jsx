@@ -18,14 +18,14 @@ class Table extends GlobalParent {
 
   clickByCountry(country) {
     const { toggleCurrentCountry } = this.props;
-    toggleCurrentCountry(country)
+    toggleCurrentCountry(country);
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     const { country } = this.props;
     if (prevProps.country !== country) {
       const elem = document.querySelector(`#${country.countryInfo.iso3}`);
-      if (elem) elem.scrollIntoView({ behavior: "smooth" });
+      if (elem) elem.scrollIntoView({ behavior: 'smooth' });
     }
   }
 
@@ -34,37 +34,43 @@ class Table extends GlobalParent {
     const { countries, country } = this.props;
 
     const getCurrentDataOnKeys = (item, key) => {
-      let res = 0
+      let res = 0;
       if (navCurrentItems[0] === 1) {
-        res = navCurrentItems[1] === 0 ? item[key] : item[keys[key][0]] / 10
+        res = navCurrentItems[1] === 0 ? item[key] : item[keys[key][0]] / 10;
       } else {
-        res = navCurrentItems[1] === 0 ? item[keys[key][1]] : (item[keys[key][1]] / item.population) * 100000
+        res =
+          navCurrentItems[1] === 0
+            ? item[keys[key][1]]
+            : (item[keys[key][1]] / item.population) * 100000;
       }
-      return res.toLocaleString()
-    }
+      return res.toLocaleString();
+    };
 
-    const getCountryRowClassName = (nameCountry) => country.country === nameCountry ? 'is-current' : null;
+    const getCountryRowClassName = (nameCountry) =>
+      country.country === nameCountry ? 'is-current' : null;
 
-    const getTableContent = countries => {
-      const keySort = navCurrentItems[1] !== 1 ? 'cases' : 'casesPerOneMillion'
-      return countries.sort((a, b) => b[keySort] - a[keySort]).map(item => (
-        <tr
-          id={item.countryInfo.iso3}
-          className={getCountryRowClassName(item.country)}
-          onClick={this.clickByCountry.bind(this, item)}
-          key={item.country}
-        >
-          <td>
-            <span className="table__flag if-open-full">
-              <img src={item.countryInfo.flag} alt="" />
-            </span>
-            {item.country}
-          </td>
-          <td>{getCurrentDataOnKeys(item, 'cases')}</td>
-          <td>{getCurrentDataOnKeys(item, 'deaths')}</td>
-          <td>{getCurrentDataOnKeys(item, 'recovered')}</td>
-        </tr>
-      ));
+    const getTableContent = () => {
+      const keySort = navCurrentItems[1] !== 1 ? 'cases' : 'casesPerOneMillion';
+      return countries
+        .sort((a, b) => b[keySort] - a[keySort])
+        .map((item) => (
+          <tr
+            id={item.countryInfo.iso3}
+            className={getCountryRowClassName(item.country)}
+            onClick={this.clickByCountry.bind(this, item)}
+            key={item.country}
+          >
+            <td>
+              <span className="table__flag if-open-full">
+                <img src={item.countryInfo.flag} alt="" />
+              </span>
+              {item.country}
+            </td>
+            <td>{getCurrentDataOnKeys(item, 'cases')}</td>
+            <td>{getCurrentDataOnKeys(item, 'deaths')}</td>
+            <td>{getCurrentDataOnKeys(item, 'recovered')}</td>
+          </tr>
+        ));
     };
 
     return (
@@ -87,7 +93,7 @@ class Table extends GlobalParent {
                   <th>Recovered</th>
                 </tr>
               </thead>
-              <tbody className="table__body">{getTableContent(countries)}</tbody>
+              <tbody className="table__body">{getTableContent()}</tbody>
             </table>
           </div>
         </div>

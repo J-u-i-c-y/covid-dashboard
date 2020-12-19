@@ -17,26 +17,41 @@ class Current extends GlobalParent {
       currentTableRows: [
         { name: 'количество случаев заболевания', key: 'cases' },
         { name: 'количество летальных исходов', key: 'deaths' },
-        { name: 'количество выздоровевших', key: 'recovered' }
-      ]
+        { name: 'количество выздоровевших', key: 'recovered' },
+      ],
     };
   }
 
   render() {
-    const { containerClassName, navItems, navCurrentItems, currentTableRows } = this.state;
-    const { country, countries, cbChangeCurrentCountry, globalWord } = this.props;
+    const {
+      containerClassName,
+      navItems,
+      navCurrentItems,
+      currentTableRows,
+    } = this.state;
+    const {
+      country,
+      countries,
+      cbChangeCurrentCountry,
+      globalWord,
+    } = this.props;
 
     const getCurrentRow = (name, key) => {
-      const item = country.country ? country : globalWord
+      const item = country.country ? country : globalWord;
       let count = 0;
       if (navCurrentItems[0] === 1) {
-        count = navCurrentItems[1] === 0 ? item[key] : item[keys[key][0]] / 10
+        count = navCurrentItems[1] === 0 ? item[key] : item[keys[key][0]] / 10;
       } else {
-        count = navCurrentItems[1] === 0 ? item[keys[key][1]] : (item[keys[key][1]] / item.population) * 100000
+        count =
+          navCurrentItems[1] === 0
+            ? item[keys[key][1]]
+            : (item[keys[key][1]] / item.population) * 100000;
       }
-      count = count === undefined ? 0 : count
+      count = count === undefined ? 0 : count;
       return (
-        <div className="current__row" key={`curr-tab-r-${key}`}>{`${name}: ${count.toLocaleString()}`}</div>
+        <div className="current__row" key={`curr-tab-r-${key}`}>
+          {`${name}: ${count.toLocaleString()}`}
+        </div>
       );
     };
 
@@ -50,10 +65,13 @@ class Current extends GlobalParent {
             toggleFullWin={this.toggleContainerClassName}
             idx="currentNav"
             countries={countries}
-            hasInput={true}
+            hasInput
             cbChangeCurrentCountry={cbChangeCurrentCountry}
           />
-          <h4>Current cuntry is: {country.country || 'Global'}</h4>
+          <h4>
+            Current cuntry is:&nbsp;
+            {country.country || 'Global'}
+          </h4>
           <div className="current__table">
             {currentTableRows.map((row) => getCurrentRow(row.name, row.key))}
           </div>
@@ -64,7 +82,7 @@ class Current extends GlobalParent {
 }
 
 Current.propTypes = {
-  country: PropTypes.object,
+  country: PropTypes.objectOf(PropTypes.object),
 };
 
 export default Current;

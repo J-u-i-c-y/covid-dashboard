@@ -17,10 +17,10 @@ class App extends Component {
       totalCases: 0,
       totalDeaths: 0,
       totalRecovered: 0,
-      globalWord: {}
+      globalWord: {},
     };
     this.covidDataAPI = new Covid19DataAPI();
-    this.toggleCurrentCountry = this.toggleCurrentCountry.bind(this)
+    this.toggleCurrentCountry = this.toggleCurrentCountry.bind(this);
   }
 
   componentDidMount() {
@@ -31,42 +31,43 @@ class App extends Component {
         totalDeaths: data.deaths,
         totalCases: data.cases,
         totalRecovered: data.recovered,
-        globalWord: data
+        globalWord: data,
       });
     });
 
-    this.covidDataAPI
-      .getCountryList()
-      .then((data) => {
-        // eslint-disable-next-line no-console
-        console.log('getCountryList', data[10]);
-        this.setState({
-          countries: data,
-        });
+    this.covidDataAPI.getCountryList().then((data) => {
+      // eslint-disable-next-line no-console
+      console.log('getCountryList', data[10]);
+      this.setState({
+        countries: data,
+      });
 
-        // пример запрос для одно страны
-        // const afg = this.covidDataAPI.getOneCountryData(this.state.countries[0].countryInfo.iso3)
-        // afg.then((data) => {
-        //   // console.log('afg', data);
-        // })
-      })
+      // пример запрос для одно страны
+      // const afg = this.covidDataAPI.getOneCountryData(this.state.countries[0].countryInfo.iso3)
+      // afg.then((data) => {
+      //   // console.log('afg', data);
+      // })
+    });
 
-    this.covidDataAPI
-      .getHistoryGlobal()
-      .then((resp) => {
-        // console.log('getHistoryGlobal', resp);
-      })
-
-  }
-
-  toggleCurrentCountry(country) {
-    this.setState({
-      country: country,
+    this.covidDataAPI.getHistoryGlobal().then((resp) => {
+      // eslint-disable-next-line no-console
+      console.log('getHistoryGlobal', resp);
     });
   }
 
+  toggleCurrentCountry(country) {
+    this.setState({ country });
+  }
+
   render() {
-    const { totalCases, totalDeaths, totalRecovered, country, countries, globalWord } = this.state;
+    const {
+      totalCases,
+      totalDeaths,
+      totalRecovered,
+      country,
+      countries,
+      globalWord,
+    } = this.state;
 
     return (
       <div className="app">
@@ -80,7 +81,11 @@ class App extends Component {
               totalDeaths={totalDeaths}
               totalRecovered={totalRecovered}
             />
-            <Table country={country} countries={countries} toggleCurrentCountry={this.toggleCurrentCountry} />
+            <Table
+              country={country}
+              countries={countries}
+              toggleCurrentCountry={this.toggleCurrentCountry}
+            />
           </div>
           <div className={('app__col', 'app__col--second')}>
             <Map />

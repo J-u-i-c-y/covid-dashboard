@@ -12,18 +12,20 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      country: 'Belarus!!!',
+      country: '',
+      countries: [],
       totalConfirmed: 0,
       totalDeaths: 0,
       totalRecovered: 0,
     };
     this.covidDataAPI = new Covid19DataAPI();
+    this.toggleCurrentCountry = this.toggleCurrentCountry.bind(this)
   }
 
   componentDidMount() {
     this.covidDataAPI.getSummaryWorld().then((data) => {
       // eslint-disable-next-line no-console
-      console.log(data);
+      // console.log(data);
       this.setState({
         totalDeaths: data.deaths,
         totalConfirmed: data.active,
@@ -35,27 +37,33 @@ class App extends Component {
       .getCountryList()
       .then((data) => {
         // eslint-disable-next-line no-console
-        console.log('getCountryList', data);
+        // console.log('getCountryList', data);
         this.setState({
           countries: data,
         });
 
-        const afg = this.covidDataAPI.getOneCountryData(this.state.countries[0].countryInfo.iso3)
-        afg.then((data) => {
-          console.log('afg', data);
-        })
+        // const afg = this.covidDataAPI.getOneCountryData(this.state.countries[0].countryInfo.iso3)
+        // afg.then((data) => {
+        //   // console.log('afg', data);
+        // })
       })
 
     this.covidDataAPI
       .getHistoryGlobal()
       .then((resp) => {
-        console.log('getHistoryGlobal', resp);
+        // console.log('getHistoryGlobal', resp);
       })
 
   }
 
+  toggleCurrentCountry(country) {
+    this.setState({
+      country: country,
+    });
+  }
+
   render() {
-    const { totalConfirmed, totalDeaths, totalRecovered, country } = this.state;
+    const { totalConfirmed, totalDeaths, totalRecovered, country, countries } = this.state;
 
     return (
       <div className="app">
@@ -69,7 +77,7 @@ class App extends Component {
               totalDeaths={totalDeaths}
               totalRecovered={totalRecovered}
             />
-            <Table />
+            <Table countries={countries} toggleCurrentCountry={this.toggleCurrentCountry} />
           </div>
           <div className={('app__col', 'app__col--second')}>
             <Map />

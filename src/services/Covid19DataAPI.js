@@ -23,7 +23,7 @@ class Covid19DataAPI {
   }
 
   async getCountryList() {
-    const countryList = await this.covidData.get('countries');
+    const countryList = await this.covidData.get('countries?yesterday=true');
     return countryList.data;
   }
 

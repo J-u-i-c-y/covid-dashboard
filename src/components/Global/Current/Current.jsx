@@ -29,6 +29,7 @@ class Current extends GlobalParent {
             toggleNavItem={this.toggleNavItem}
             toggleFullWin={this.toggleContainerClassName}
             idx="currentNav"
+            hasInput={true}
           />
           <h4>{title}</h4>
           <p>

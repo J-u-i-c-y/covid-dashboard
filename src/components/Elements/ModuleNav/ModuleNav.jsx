@@ -11,7 +11,9 @@ class ModuleNav extends Component {
       isFull: true,
       menuIsOpen: false,
       nuvCurrentItems: navCurrentItems,
+      openInputDropdown: false
     };
+    this.handlerInput = this.handlerInput.bind(this);
   }
 
   componentDidMount() {
@@ -60,11 +62,19 @@ class ModuleNav extends Component {
     toggleNavItem(nuvCurrentItems);
   }
 
+  handlerInput = (event) => {
+    console.log(event.target.value);
+    this.setState({
+      openInputDropdown: true
+    })
+  };
+
   render() {
-    const { isFull, menuIsOpen, nuvCurrentItems } = this.state;
+    const { isFull, menuIsOpen, nuvCurrentItems, openInputDropdown } = this.state;
     const fullIcon = isFull ? '#open-full' : '#close-full';
     const menuWrapperClassName = menuIsOpen ? 'is-open' : '';
-    const { navItems, idx } = this.props;
+    const inputDropdownClassName = openInputDropdown ? 'is-open' : '';
+    const { navItems, idx, hasInput } = this.props;
     const menuItem = (el, id, groupId) => {
       return (
         <li
@@ -119,6 +129,12 @@ class ModuleNav extends Component {
           </div>
           <div className="module-nav__menu-dropdown">{menuNavListsContent}</div>
         </div>
+        {hasInput &&
+          <div className="module-nav__input-wrap">
+            <input type="test" placeholder="Search country" onInput={this.handlerInput}/>
+            <div className={`module-nav__input-dropdown ${inputDropdownClassName}`} ></div>
+          </div>
+        }
         <div className="module-nav__full">
           <button type="button" onClick={this.toggleFullWin.bind(this)}>
             <svg width="24" height="24">

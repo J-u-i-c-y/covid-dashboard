@@ -28,12 +28,16 @@ class Covid19DataAPI {
   }
 
   async getOneCountryData(country) {
-    const countryData = await this.covidData.get(`countries/${country}?strict=true`);
+    const countryData = await this.covidData.get(
+      `countries/${country}?strict=true`
+    );
     return countryData.data;
   }
 
   async getHistoryGlobal(days = 150) {
-    const historyData = await this.covidData.get(`historical/all?lastdays=${days}`);
+    const historyData = await this.covidData.get(
+      `historical/all?lastdays=${days}`
+    );
     return historyData.data;
   }
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import GlobalParent from '../GlobalParent/GlobalParent';
 import './Table.scss';
 import ModuleNav from '../../Elements/ModuleNav/ModuleNav';
+import keys from '../../../constants/keys';
 
 class Table extends GlobalParent {
   constructor(props) {
@@ -17,58 +18,59 @@ class Table extends GlobalParent {
 
   clickByCountry(country) {
     const { toggleCurrentCountry } = this.props;
-    toggleCurrentCountry(country)
+    toggleCurrentCountry(country);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { country } = this.props;
+    if (prevProps.country !== country) {
+      const elem = document.querySelector(`#${country.countryInfo.iso3}`);
+      if (elem) elem.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 
   render() {
     const { containerClassName, navItems, navCurrentItems } = this.state;
-    const { countries } = this.props;
+    const { countries, country } = this.props;
 
-    const getCurrentCases = item => {
-      let res = 0
+    const getCurrentDataOnKeys = (item, key) => {
+      let res = 0;
       if (navCurrentItems[0] === 1) {
-        res = navCurrentItems[1] === 0 ? item.cases : item.casesPerOneMillion / 10
+        res = navCurrentItems[1] === 0 ? item[key] : item[keys[key][0]] / 10;
       } else {
-        res = navCurrentItems[1] === 0 ? item.todayCases : (item.todayCases / item.population) * 100000
+        res =
+          navCurrentItems[1] === 0
+            ? item[keys[key][1]]
+            : (item[keys[key][1]] / item.population) * 100000;
       }
-      return res.toLocaleString()
-    }
+      return res.toLocaleString();
+    };
 
-    const getCurrentDeaths = item => {
-      let res = 0
-      if (navCurrentItems[0] === 1) {
-        res = navCurrentItems[1] === 0 ? item.deaths : item.deathsPerOneMillion / 10
-      } else {
-        res = navCurrentItems[1] === 0 ? item.todayDeaths : (item.todayDeaths / item.population) * 100000
-      }
-      return res.toLocaleString()
-    }
+    const getCountryRowClassName = (nameCountry) =>
+      country.country === nameCountry ? 'is-current' : null;
 
-    const getCurrentRecovered = item => {
-      let res = 0
-      if (navCurrentItems[0] === 1) {
-        res = navCurrentItems[1] === 0 ? item.recovered : item.recoveredPerOneMillion / 10
-      } else {
-        res = navCurrentItems[1] === 0 ? item.todayRecovered : (item.todayRecovered / item.population) * 100000
-      }
-      return res.toLocaleString()
-    }
-
-    const getTableContent = countries => {
-      const keySort = navCurrentItems[1] !== 1 ? 'cases' : 'casesPerOneMillion'
-      return countries.sort((a, b) => b[keySort] - a[keySort]).map(item => (
-        <tr key={item.country} onClick={this.clickByCountry.bind(this, item.country)}>
-          <td>
-            <span className="table__flag if-open-full">
-              <img src={item.countryInfo.flag} alt="" />
-            </span>
-            {item.country}
-          </td>
-          <td>{getCurrentCases(item)}</td>
-          <td>{getCurrentDeaths(item)}</td>
-          <td>{getCurrentRecovered(item)}</td>
-        </tr>
-      ));
+    const getTableContent = () => {
+      const keySort = navCurrentItems[1] !== 1 ? 'cases' : 'casesPerOneMillion';
+      return countries
+        .sort((a, b) => b[keySort] - a[keySort])
+        .map((item) => (
+          <tr
+            id={item.countryInfo.iso3}
+            className={getCountryRowClassName(item.country)}
+            onClick={this.clickByCountry.bind(this, item)}
+            key={item.country}
+          >
+            <td>
+              <span className="table__flag if-open-full">
+                <img src={item.countryInfo.flag} alt="" />
+              </span>
+              {item.country}
+            </td>
+            <td>{getCurrentDataOnKeys(item, 'cases')}</td>
+            <td>{getCurrentDataOnKeys(item, 'deaths')}</td>
+            <td>{getCurrentDataOnKeys(item, 'recovered')}</td>
+          </tr>
+        ));
     };
 
     return (
@@ -91,7 +93,7 @@ class Table extends GlobalParent {
                   <th>Recovered</th>
                 </tr>
               </thead>
-              <tbody className="table__body">{getTableContent(countries)}</tbody>
+              <tbody className="table__body">{getTableContent()}</tbody>
             </table>
           </div>
         </div>

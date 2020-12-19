@@ -17,6 +17,7 @@
 
       .module-nav__menu-dropdown {
         max-height: 300px;
+        opacity: 1;
       }
     }
   }
@@ -31,10 +32,11 @@
     left: 0;
     width: 286px;
     max-height: 0;
+    opacity: 0;
     overflow: hidden;
-    background: #eee;
+    background-color: #eee;
     border: 1px solid $neutral-placeholder;
-    transition: max-height .3s ease-in-out;
+    transition: max-height .3s ease-in-out, opacity .3s ease-in-out;
   }
 
   &__menu-list {
@@ -70,5 +72,41 @@
       background-color: #000;
       pointer-events: none;
     }
+  }
+
+  &__input-wrap {
+    position: relative;
+    display: inline-block;
+    margin: 0 auto;
+  }
+
+  &__input-dropdown {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    width: 100%;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    background-color: #eee;
+    border: 1px solid $neutral-placeholder;
+    transition: max-height .3s ease-in-out, opacity .3s ease-in-out;
+    overflow-y: auto;
+
+    &.is-open {
+      max-height: 300px;
+      opacity: 1;
+    }
+  }
+
+  &__input-dropdown_inner {
+    padding: 10px 0;
+  }
+
+  &__input-dropdown_item {
+    width: 100%;
+    margin: 5px 0;
+    cursor: pointer;
+    text-align: left;
   }
 }

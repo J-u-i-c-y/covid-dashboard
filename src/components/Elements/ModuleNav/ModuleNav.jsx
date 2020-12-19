@@ -11,7 +11,11 @@ class ModuleNav extends Component {
       isFull: true,
       menuIsOpen: false,
       nuvCurrentItems: navCurrentItems,
+      openInputDropdown: false,
+      searchCountryString: '',
     };
+    this.handlerInput = this.handlerInput.bind(this);
+    this.getCurrentListCountries = this.getCurrentListCountries.bind(this);
   }
 
   componentDidMount() {
@@ -21,32 +25,33 @@ class ModuleNav extends Component {
     });
   }
 
-  toggleFullWin() {
-    const { isFull } = this.state;
+  handlerInput(event) {
+    const { openInputDropdown } = this.state;
+    const searchCountryString = event.target.value;
     this.setState({
-      isFull: !isFull,
-      menuIsOpen: false,
+      searchCountryString: searchCountryString.toLowerCase(),
     });
-    const { toggleFullWin } = this.props;
-    toggleFullWin(isFull);
-  }
-
-  toggleMenu() {
-    const { menuIsOpen } = this.state;
-    this.setState({ menuIsOpen: !menuIsOpen });
-    if (!menuIsOpen) {
-      window.addEventListener('click', this.closeMenu.bind(this));
-    } else {
-      window.removeEventListener('click', this.closeMenu.bind(this));
+    if (searchCountryString === '') {
+      this.toggleInputDropdown(false);
+    } else if (!openInputDropdown) {
+      this.toggleInputDropdown(true);
     }
   }
 
-  closeMenu(e) {
-    const { idx } = this.props;
-    if (!e.target.closest(`#${idx}`)) {
-      this.setState({ menuIsOpen: false });
-      window.removeEventListener('click', this.closeMenu.bind(this));
+  handlerInputKeyDown(event) {
+    if (event.key === 'Enter') {
+      const currentList = this.getCurrentListCountries();
+      if (currentList && currentList.length > 0)
+        this.changeCurrentCountry(currentList[0]);
     }
+  }
+
+  getCurrentListCountries() {
+    const { searchCountryString } = this.state;
+    const { countries } = this.props;
+    return countries.filter((el) =>
+      el.country.toLowerCase().includes(searchCountryString)
+    );
   }
 
   toggleCurrentMenuItem(id, groupId) {
@@ -60,11 +65,63 @@ class ModuleNav extends Component {
     toggleNavItem(nuvCurrentItems);
   }
 
+  closeMenu(e) {
+    const { idx } = this.props;
+    if (!e.target.closest(`#${idx}`)) {
+      this.setState({ menuIsOpen: false });
+      window.removeEventListener('click', this.closeMenu.bind(this));
+    }
+  }
+
+  toggleMenu() {
+    const { menuIsOpen } = this.state;
+    this.setState({ menuIsOpen: !menuIsOpen });
+    if (!menuIsOpen) {
+      window.addEventListener('click', this.closeMenu.bind(this));
+    } else {
+      window.removeEventListener('click', this.closeMenu.bind(this));
+    }
+  }
+
+  toggleFullWin() {
+    const { isFull } = this.state;
+    this.setState({
+      isFull: !isFull,
+      menuIsOpen: false,
+    });
+    const { toggleFullWin } = this.props;
+    toggleFullWin(isFull);
+  }
+
+  toggleInputDropdown(data) {
+    this.setState({
+      openInputDropdown: data,
+    });
+    if (!data) {
+      this.setState({
+        searchCountryString: '',
+      });
+    }
+  }
+
+  changeCurrentCountry(country) {
+    this.toggleInputDropdown(false);
+    const { cbChangeCurrentCountry } = this.props;
+    cbChangeCurrentCountry(country);
+  }
+
   render() {
-    const { isFull, menuIsOpen, nuvCurrentItems } = this.state;
+    const {
+      isFull,
+      menuIsOpen,
+      nuvCurrentItems,
+      openInputDropdown,
+      searchCountryString,
+    } = this.state;
     const fullIcon = isFull ? '#open-full' : '#close-full';
     const menuWrapperClassName = menuIsOpen ? 'is-open' : '';
-    const { navItems, idx } = this.props;
+    const inputDropdownClassName = openInputDropdown ? 'is-open' : '';
+    const { navItems, idx, hasInput } = this.props;
     const menuItem = (el, id, groupId) => {
       return (
         <li
@@ -107,6 +164,23 @@ class ModuleNav extends Component {
         {menuOneList(groupe, groupId)}
       </ul>
     ));
+    const getListOfCountries = () => {
+      const currentList = this.getCurrentListCountries();
+      let result;
+      if (currentList.length > 0) {
+        result = currentList.map((item) => (
+          <button
+            type="button"
+            className="module-nav__input-dropdown_item"
+            onClick={this.changeCurrentCountry.bind(this, item)}
+            key={item.country}
+          >
+            {item.country}
+          </button>
+        ));
+      } else result = <div>No countryes found.</div>;
+      return result;
+    };
     return (
       <div className="module-nav" id={idx}>
         <div className={`module-nav__menu ${menuWrapperClassName}`}>
@@ -119,6 +193,25 @@ class ModuleNav extends Component {
           </div>
           <div className="module-nav__menu-dropdown">{menuNavListsContent}</div>
         </div>
+        {hasInput && (
+          <div className="module-nav__input-wrap">
+            <input
+              type="test"
+              placeholder="Search country"
+              value={searchCountryString}
+              onChange={this.handlerInput}
+              onKeyDown={this.handlerInputKeyDown}
+            />
+            <div
+              className={`module-nav__input-dropdown ${inputDropdownClassName}`}
+            >
+              <div className="module-nav__input-dropdown_inner">
+                {getListOfCountries()}
+              </div>
+            </div>
+          </div>
+        )}
+
         <div className="module-nav__full">
           <button type="button" onClick={this.toggleFullWin.bind(this)}>
             <svg width="24" height="24">
@@ -137,6 +230,15 @@ ModuleNav.propTypes = {
   toggleNavItem: PropTypes.func.isRequired,
   navCurrentItems: PropTypes.arrayOf(PropTypes.number).isRequired,
   idx: PropTypes.string.isRequired,
+  countries: PropTypes.arrayOf(PropTypes.object),
+  cbChangeCurrentCountry: PropTypes.func,
+  hasInput: PropTypes.bool,
+};
+
+ModuleNav.defaultProps = {
+  hasInput: false,
+  cbChangeCurrentCountry: () => {},
+  countries: [],
 };
 
 export default ModuleNav;

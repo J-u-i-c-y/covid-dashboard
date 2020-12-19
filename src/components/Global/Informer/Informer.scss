@@ -6,7 +6,24 @@
   color: $primary-color;
 
   &__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
     height: 150px;
-    text-align: center;
+    padding: 10px 20px;
+    box-shadow: 0 0 48px 12px rgba($purple-color, 0.8)inset;
+  }
+
+  &__row {
+    @extend %dfsb;
+    font-size: 18px;
+
+    span {
+      font-weight: 700;
+    }
+
+    &--center {
+      justify-content: center;
+    }
   }
 }

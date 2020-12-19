@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Map.scss';
+// eslint-disable-next-line
 import { MapContainer, TileLayer, Marker, Popup, GeoJSON, Circle, Tooltip, useMapEvents, Polygon} from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';

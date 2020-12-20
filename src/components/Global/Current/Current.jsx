@@ -69,7 +69,7 @@ class Current extends GlobalParent {
             cbChangeCurrentCountry={cbChangeCurrentCountry}
           />
           <h4>
-            Current cuntry is:&nbsp;
+            Current country is:&nbsp;
             {country.country || 'Global'}
           </h4>
           <div className="current__table">

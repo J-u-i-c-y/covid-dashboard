@@ -34,9 +34,9 @@ class Covid19DataAPI {
     return countryData.data;
   }
 
-  async getHistoryGlobal(days = 150) {
+  async getHistoryGlobal() {
     const historyData = await this.covidData.get(
-      `historical/all?lastdays=${days}`
+      `historical/all`
     );
     return historyData.data;
   }

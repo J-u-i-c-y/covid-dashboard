@@ -5,6 +5,8 @@ import { MapContainer, TileLayer, Marker, Popup, GeoJSON, Circle, Tooltip, useMa
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import euCountries from '../../../counties.js';
+import Covid19DataAPI from '../../../services/Covid19DataAPI';
+
 
 delete L.Icon.Default.prototype._getIconUrl;
 
@@ -25,6 +27,7 @@ L.Icon.Default.mergeOptions({
 //   }
 // });
 const geodatas = euCountries;
+let countriesArray = [];
 //  onEachFeature
 // geodatas.eachLayer(function (layer) {
 //   layer.bindPopup(layer.feature.properties.name);
@@ -42,9 +45,11 @@ const geodatas = euCountries;
 //   });
 // });
 
-const purpleOptions = { color: '#000', fillColor: '#000', fillOpacity: 0.3, weight: 1 }
+const purpleOptions = { color: '#000', fillColor: '#000', fillOpacity: 0.3, weight: 1 };
 
-console.log(geodatas.features);
+
+
+// console.log(geodatas.features);
 
 // geodatas.features.forEach((e) => {
 //   e.on('popupclose', function (elem) {
@@ -57,31 +62,54 @@ console.log(geodatas.features);
 // });
 
 
-function RenderCircle() {
-  return (
-    <Circle
-      center={[51.505, -0.09]}
-      pathOptions={{ fillColor: 'red', fillOpacity: 1, color: 'red' }}
-      radius={20000}>
-    </Circle>
-  )
-}
 
 class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      geodatas: geodatas,
+      geodatas: euCountries,
       lat: 51.881403,
       lng: 0.918583,
       zoom: 4,
     };
+    this.covidDataAPI = new Covid19DataAPI();
   }
+
+  componentDidMount() {
+    this.covidDataAPI.getCountryList().then((data) => {
+      // eslint-disable-next-line no-console
+      this.setState({
+        countries: data,
+      });
+      countriesArray = data;
+      console.log(countriesArray[0]);
+    });
+
+    
+  }
+ 
 
   render() {
 
     const position = [this.state.lat, this.state.lng];
-    
+
+    const RenderCircle = () => {
+      return countriesArray.map((item) => (
+        <Circle
+          center={[item.countryInfo.lat, item.countryInfo.long]}
+          pathOptions={{ fillColor: 'red', fillOpacity: 1, color: 'red' }}
+          radius={item.casesPerOneMillion}
+          eventHandlers={{
+            click: () => {
+              console.log('marker clicked')
+            },
+          }}
+          >
+          <Tooltip>{item.country} {item.cases}</Tooltip>
+        </Circle>
+      ))
+    }
+
     return (
       <div id="map" className="map">
 
@@ -91,12 +119,6 @@ class Map extends Component {
             url="https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png"
           />
           <GeoJSON pathOptions={purpleOptions} data={this.state.geodatas} />
-          {/* <Marker position={[51.505, -0.09]}>
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
-            <Tooltip>123</Tooltip>
-          </Marker> */}
           <Circle
             center={[50.505, 10.09]}
             pathOptions={{ fillColor: 'red', fillOpacity: 1, color: 'red' }}

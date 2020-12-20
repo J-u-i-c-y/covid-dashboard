@@ -18,11 +18,6 @@ class App extends Component {
       totalDeaths: 0,
       totalRecovered: 0,
       globalWord: {},
-      globalHistory: {
-        cases: {},
-        deaths: {},
-        recovered: {},
-      },
     };
     this.covidDataAPI = new Covid19DataAPI();
     this.toggleCurrentCountry = this.toggleCurrentCountry.bind(this);
@@ -40,8 +35,6 @@ class App extends Component {
     });
 
     this.covidDataAPI.getCountryList().then((data) => {
-      // eslint-disable-next-line no-console
-      // console.log('getCountryList', data[10]);
       this.setState({
         countries: data,
       });
@@ -51,14 +44,6 @@ class App extends Component {
       // afg.then((data) => {
       //   // console.log('afg', data);
       // })
-    });
-
-    this.covidDataAPI.getHistoryGlobal().then((resp) => {
-      // eslint-disable-next-line no-console
-      // console.log('getHistoryGlobal', resp);
-      this.setState({
-        globalHistory: resp,
-      })
     });
   }
 
@@ -74,7 +59,6 @@ class App extends Component {
       country,
       countries,
       globalWord,
-      globalHistory,
     } = this.state;
 
     return (
@@ -105,12 +89,7 @@ class App extends Component {
               cbChangeCurrentCountry={this.toggleCurrentCountry}
               globalWord={globalWord}
             />
-            <Charts
-                country={country}
-                countries={countries}
-                cbChangeCurrentCountry={this.toggleCurrentCountry}
-                globalWord={globalWord}
-                globalHistory={globalHistory}/>
+            <Charts country={country} />
           </div>
         </div>
       </div>

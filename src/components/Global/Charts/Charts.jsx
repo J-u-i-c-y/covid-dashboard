@@ -5,6 +5,7 @@ import GlobalParent from '../GlobalParent/GlobalParent';
 import ModuleNav from '../../Elements/ModuleNav/ModuleNav';
 import Current from "../Current/Current";
 import { Line } from '@reactchartjs/react-chart.js';
+import Covid19DataAPI from "../../../services/Covid19DataAPI";
 
 class Charts extends GlobalParent {
   constructor(props) {
@@ -16,42 +17,62 @@ class Charts extends GlobalParent {
         ['В абсолютных величинах', 'На 100 тыс. населения'],
       ],
       navCurrentItems: [0, 0],
+      history: {
+        cases: {},
+        deaths: {},
+        recovered: {},
+      },
     };
+    this.covidDataAPI = new Covid19DataAPI();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { country } = this.props;
+    if (prevProps.country !== country) {
+      this.covidDataAPI.getHistoryCountry(country.country).then((resp) => {
+        this.setState({
+          history: resp.timeline,
+        })
+      });
+    }
+  }
+
+  componentDidMount() {
+    this.covidDataAPI.getHistoryGlobal().then((resp) => {
+      this.setState({
+        history: resp,
+      })
+    });
   }
 
   render() {
-    const {
-      country,
-      // countries,
-      // cbChangeCurrentCountry,
-      // globalWord,
-      globalHistory,
-    } = this.props;
+    const { country } = this.props;
+    const { history } = this.state;
 
-    const casesData = Object.entries(globalHistory.cases);
-    const deathsData = Object.entries(globalHistory.deaths);
-    const recoveredData = Object.entries(globalHistory.recovered);
+    const casesData = Object.entries(history.cases);
+    const deathsData = Object.entries(history.deaths);
+    const recoveredData = Object.entries(history.recovered);
 
     const data = {
       labels: casesData.map(([date]) => date),
       datasets: [
         {
-          label: 'Total cases',
-          data: casesData.map(([date, value]) => value),
+          label: 'Cases',
+          data: casesData.map(([ , value]) => value),
           fill: false,
           backgroundColor: 'rgb(83,196,214)',
           borderColor: 'rgba(83,196,214, 0.5)',
         },
         {
-          label: 'Total deaths',
-          data: deathsData.map(([date, value]) => value),
+          label: 'Deaths',
+          data: deathsData.map(([ , value]) => value),
           fill: false,
           backgroundColor: 'rgb(202,1,1)',
           borderColor: 'rgb(202,1,1, 0.5)',
         },
         {
-          label: 'Total recovered',
-          data: recoveredData.map(([date, value]) => value),
+          label: 'Recovered',
+          data: recoveredData.map(([ , value]) => value),
           fill: false,
           backgroundColor: 'rgb(189,19,222)',
           borderColor: 'rgba(189,19,222, 0.5)',
@@ -65,9 +86,20 @@ class Charts extends GlobalParent {
           {
             ticks: {
               beginAtZero: true,
+              'callback': (label) => {
+                return Intl.NumberFormat().format(label);
+              }
             },
           },
         ],
+        xAxes: [{
+          type: "time",
+          time: {
+            displayFormats: {
+              hour: 'MMM DD'
+            }
+          }
+        }],
       },
     };
 

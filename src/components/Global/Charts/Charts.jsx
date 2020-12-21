@@ -54,49 +54,61 @@ class Charts extends GlobalParent {
     const recoveredData = Object.entries(history.recovered);
 
     const data = {
-      labels: casesData.map(([date]) => date),
+      labels: casesData.map(([date]) => date.split('/').join('.')),
       datasets: [
         {
           label: 'Cases',
           data: casesData.map(([ , value]) => value),
           fill: false,
-          backgroundColor: 'rgb(83,196,214)',
+          backgroundColor: 'rgb(83,196,214, 0.8)',
           borderColor: 'rgba(83,196,214, 0.5)',
+          radius: 2,
         },
         {
           label: 'Deaths',
           data: deathsData.map(([ , value]) => value),
           fill: false,
-          backgroundColor: 'rgb(202,1,1)',
+          backgroundColor: 'rgb(202,1,1, 0.8)',
           borderColor: 'rgb(202,1,1, 0.5)',
+          radius: 2,
         },
         {
           label: 'Recovered',
           data: recoveredData.map(([ , value]) => value),
           fill: false,
-          backgroundColor: 'rgb(189,19,222)',
+          backgroundColor: 'rgb(189,19,222, 0.8)',
           borderColor: 'rgba(189,19,222, 0.5)',
+          radius: 2,
         },
       ],
     };
 
     const options = {
+      tooltips: {
+        callbacks: {
+          label: (tooltipItem, data) => {
+            return Number(tooltipItem.yLabel)
+                .toFixed(0)
+                .replace(/./g, (c, i, a) => {
+                  return i > 0 && c !== " " && (a.length - i) % 3 === 0 ? " " + c : c
+                });
+          }
+        },
+      },
       scales: {
-        yAxes: [
-          {
+        yAxes: [{
             ticks: {
               beginAtZero: true,
               'callback': (label) => {
                 return Intl.NumberFormat().format(label);
               }
             },
-          },
-        ],
+        }],
         xAxes: [{
-          type: "time",
+          type: 'time',
           time: {
             displayFormats: {
-              hour: 'MMM DD'
+              day: 'MMM DD'
             }
           }
         }],
@@ -122,7 +134,6 @@ class Charts extends GlobalParent {
             navCurrentItems={navCurrentItems}
             toggleNavItem={this.toggleNavItem}
             toggleFullWin={this.toggleContainerClassName}
-            idx="chartNav"
           />
           <h4>
             Current country is:&nbsp;

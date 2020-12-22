@@ -69,9 +69,19 @@ class Charts extends GlobalParent {
     const data = this.getChartData();
 
     const options = {
+      tooltips: {
+        callbacks: {
+          label: (tooltipItem, data) => {
+            return Number(tooltipItem.yLabel)
+                .toFixed(0)
+                .replace(/./g, (c, i, a) => {
+                  return i > 0 && c !== " " && (a.length - i) % 3 === 0 ? " " + c : c
+                });
+          }
+        },
+      },
       scales: {
-        yAxes: [
-          {
+        yAxes: [{
             ticks: {
               beginAtZero: true,
               callback: (label) => {
@@ -110,7 +120,6 @@ class Charts extends GlobalParent {
             navCurrentItems={navCurrentItems}
             toggleNavItem={this.toggleNavItem}
             toggleFullWin={this.toggleContainerClassName}
-            idx="chartNav"
           />
           <h4>
             Chart of&nbsp;

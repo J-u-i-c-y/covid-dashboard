@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './Current.scss';
 import GlobalParent from '../GlobalParent/GlobalParent';
 import ModuleNav from '../../Elements/ModuleNav/ModuleNav';
@@ -80,9 +79,5 @@ class Current extends GlobalParent {
     );
   }
 }
-
-Current.propTypes = {
-  country: PropTypes.objectOf(PropTypes.object),
-};
 
 export default Current;

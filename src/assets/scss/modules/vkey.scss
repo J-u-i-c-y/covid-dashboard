@@ -1,0 +1,247 @@
+.vkey {
+    position: fixed;
+    z-index: 2000;
+    bottom: -350px;
+    left: 0;
+    width: 100%;
+    height: 350px;
+    padding: 0 10px;
+    color: $colorBlack;
+    background-color: $colorGray;
+    transition: transform .3s ease-in-out;
+
+    @include mq(767) {
+        height: 270px;
+
+        [data-keycode='32'] {
+            flex-shrink: 1;
+        }
+    }
+
+    &.is-open {
+        transform: translate3d(0, -350px, 0);
+    }
+
+    &__wrapper {
+        width: 1024px;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    &__header {
+        display: flex;
+        padding: 3px 0;
+
+        @include mq(767) {
+            padding: 1px 0;
+        }
+    }
+
+    &__body {
+        font-size: 17px;
+        line-height: 1;
+
+        @include mq(767) {
+            font-size: 14px;
+        }
+
+        .vkey__button-symbol span {
+            display: none;
+        }
+
+        .vkey__button-functionaly--multy span {
+            display: none;
+        }
+
+        .vkey__button-number span {
+            display: none;
+            opacity: .5;
+        }
+
+        @for $i from 1 through 4 {
+
+            &[data-symbol='#{$i - 1}'] {
+
+                .vkey__button-number span:nth-child(#{$i}) {
+                    opacity: 1;
+                }
+            }
+
+            &[data-symbol='#{$i - 1}'] {
+
+                .vkey__button-symbol span:nth-child(#{$i}) {
+                    display: block;
+                }
+
+                .vkey__button-functionaly--multy span:nth-child(#{$i}) {
+                    display: block;
+                }
+            }
+        }
+
+        &[data-symbol='0'],
+        &[data-symbol='1'] {
+
+            .vkey__button-number span:first-child,
+            .vkey__button-number span:nth-child(2) {
+                display: block;
+            }
+        }
+
+        &[data-symbol='2'],
+        &[data-symbol='3'] {
+
+            .vkey__button-number span:nth-child(3),
+            .vkey__button-number span:nth-child(4) {
+                display: block;
+            }
+        }
+    }
+
+    &__row {
+        display: flex;
+        margin: 0 0 3px;
+
+        @include mq(767) {
+            margin: 0 0 1px;
+        }
+    }
+
+    &__button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 50px;
+        transition: background-color .1s ease-in-out, color .1s ease-in-out;
+
+        @include mq(767) {
+            height: 40px;
+            font-weight: 500;
+        }
+
+        span {
+            padding: 2px 0 0;
+            margin: 0;
+        }
+
+        &:not(:last-child) {
+            margin: 0 3px 0 0;
+
+            @include mq(767) {
+                margin: 0 1px 0 0;
+            }
+        }
+
+        &-service {
+            width: 40px;
+            height: 40px;
+            background-color: transparent;
+
+            &:hover {
+                background-color: $colorGrayLight;
+            }
+
+            &.is-active {
+                svg:first-child {
+                    display: none;
+                }
+
+                svg:nth-child(2) {
+                    display: block;
+                }
+            }
+
+            svg:nth-child(2) {
+                display: none;
+            }
+        }
+
+        &-close {
+            margin: 0 0 0 auto;
+        }
+
+        &-functionaly {
+            min-width: 50px;
+            background-color: $colorGrayLight;
+
+            &:hover {
+                background-color: #d1d1d1;
+            }
+        }
+
+        &-symbol,
+        &-number {
+            flex-grow: 1;
+            width: 60px;
+            background-color: #f9f9f9;
+
+            &:hover {
+                background-color: $colorGrayLight;
+            }
+        }
+
+        &-number {
+            position: relative;
+
+            @include mq(767) {
+                padding: 9px 0 0;
+            }
+
+            span {
+                &:nth-child(2n) {
+                    position: absolute;
+                    top: 5px;
+                    left: 5px;
+                    font-size: 16px;
+
+                    @include mq(767) {
+                        top: 3px;
+                        left: 3px;
+                        font-size: 13px;
+                    }
+                }
+            }
+        }
+
+        &:active,
+        &.active {
+            color: $colorWhite;
+            background-color: lighten($color: blue, $amount: 10%);
+        }
+    }
+
+    &__recording {
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 11px;
+        height: 100%;
+        padding: 14px 0 0 4px;
+
+        &.active:after {
+            content: '';
+            animation: dots 1.2s infinite;
+        }
+    }
+}
+
+@keyframes dots {
+    0% {
+        content: '';
+    }
+
+    50% {
+        content: '.';
+    }
+
+    66% {
+        content: '..';
+    }
+
+    83% {
+        content: '...';
+    }
+
+    100% {
+        content: '....';
+    }
+}

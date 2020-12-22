@@ -10,6 +10,7 @@
     "no-unused-vars": "warn",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/no-unused-state": "warn",
+    "no-case-declarations": 0,
     "prettier/prettier": [
       "warn",
       {

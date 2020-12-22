@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './ModuleNav.scss';
 import sprite from '../../../assets/images/sprite.svg';
+import VKey from '../../../services/Vkey/Vkey';
 
 class ModuleNav extends Component {
   constructor(props) {
@@ -19,11 +20,15 @@ class ModuleNav extends Component {
   }
 
   componentDidMount() {
-    const { navItems } = this.props;
+    const { navItems, hasInput } = this.props;
     if (navItems.length >= 2) {
       navItems.forEach((group, groupId) => {
         if (groupId < group.length - 1) group.push('separator');
       });
+    }
+    if (hasInput) {
+      this.vkey = new VKey('#country-input');
+      this.vkey.init();
     }
   }
 
@@ -103,6 +108,7 @@ class ModuleNav extends Component {
       this.setState({
         searchCountryString: '',
       });
+      this.vkey.close();
     }
   }
 
@@ -199,9 +205,11 @@ class ModuleNav extends Component {
           <div className="module-nav__input-wrap">
             <input
               type="test"
+              id="country-input"
               placeholder="Search country"
               value={searchCountryString}
               onChange={this.handlerInput}
+              onFocus={this.handlerInput}
               onKeyDown={this.handlerInputKeyDown}
             />
             <div

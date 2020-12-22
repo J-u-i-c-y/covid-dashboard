@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './Map.scss';
 // eslint-disable-next-line
 import { MapContainer, TileLayer, Marker, Popup, GeoJSON, Circle, Tooltip, useMapEvents, Polygon} from 'react-leaflet';
@@ -6,6 +6,10 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import euCountries from '../../../counties.js';
 import Covid19DataAPI from '../../../services/Covid19DataAPI';
+import GlobalParent from '../GlobalParent/GlobalParent';
+import ModuleNav from '../../Elements/ModuleNav/ModuleNav';
+
+
 
 
 delete L.Icon.Default.prototype._getIconUrl;
@@ -63,10 +67,12 @@ const purpleOptions = { color: '#000', fillColor: '#000', fillOpacity: 0.3, weig
 
 
 
-class Map extends Component {
+class Map extends GlobalParent {
   constructor(props) {
     super(props);
     this.state = {
+      navItems: [['Cases', 'Deaths', 'Recovered']],
+      navCurrentItems: [0],
       geodatas: euCountries,
       lat: 51.881403,
       lng: 0.918583,
@@ -92,6 +98,8 @@ class Map extends Component {
   render() {
 
     const position = [this.state.lat, this.state.lng];
+    const { containerClassName, navItems, navCurrentItems } = this.state;
+
 
     const RenderCircle = () => {
       return countriesArray.map((item) => (
@@ -111,23 +119,34 @@ class Map extends Component {
     }
 
     return (
-      <div id="map" className="map">
+      <div className="map">
+        <div className={`map__container ${containerClassName}`}>
+          <ModuleNav
+              navItems={navItems}
+              navCurrentItems={navCurrentItems}
+              toggleNavItem={this.toggleNavItem}
+              toggleFullWin={this.toggleContainerClassName}
+              idx="mapNav"
+            />
 
-        <MapContainer center={position} zoom={this.state.zoom} scrollWheelZoom={false}>
-          <TileLayer
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png"
-          />
-          <GeoJSON pathOptions={purpleOptions} data={this.state.geodatas} />
-          <Circle
-            center={[50.505, 10.09]}
-            pathOptions={{ fillColor: 'red', fillOpacity: 1, color: 'red' }}
-            radius={20000}>
-            <Tooltip>123</Tooltip>
-          </Circle>
-          <RenderCircle />
-        </MapContainer>
-        
+          <div id="map" className="map__wrapper">
+            <MapContainer center={position} zoom={this.state.zoom} scrollWheelZoom={true}>
+              <TileLayer
+                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png"
+              />
+              <GeoJSON pathOptions={purpleOptions} data={this.state.geodatas} />
+              <Circle
+                center={[50.505, 10.09]}
+                pathOptions={{ fillColor: 'red', fillOpacity: 1, color: 'red' }}
+                radius={20000}>
+                <Tooltip>123</Tooltip>
+              </Circle>
+              <RenderCircle />
+            </MapContainer>
+          </div>
+
+        </div>
       </div>
     );
   }

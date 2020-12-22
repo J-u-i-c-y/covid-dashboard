@@ -10,3 +10,12 @@
     height: 100%;
   }
 }
+
+.map__container {
+  padding: 5px;
+  height: 100%;
+}
+
+.map__wrapper {
+  height: calc(100% - 60px);
+}

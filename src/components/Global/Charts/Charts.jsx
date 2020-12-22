@@ -120,6 +120,7 @@ class Charts extends GlobalParent {
             navCurrentItems={navCurrentItems}
             toggleNavItem={this.toggleNavItem}
             toggleFullWin={this.toggleContainerClassName}
+            idx="chartsNav"
           />
           <h4>
             Chart of&nbsp;

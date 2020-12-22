@@ -20,9 +20,11 @@ class ModuleNav extends Component {
 
   componentDidMount() {
     const { navItems } = this.props;
-    navItems.forEach((group, groupId) => {
-      if (groupId < group.length - 1) group.push('separator');
-    });
+    if (navItems.length >= 2) {
+      navItems.forEach((group, groupId) => {
+        if (groupId < group.length - 1) group.push('separator');
+      });
+    }
   }
 
   handlerInput(event) {

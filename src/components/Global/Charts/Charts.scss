@@ -9,7 +9,13 @@
     padding: 5px;
 
     &:not(.is-open-full) {
-      height: 300px;
+      height: calc(100vh - 390px);
     }
+  }
+
+  &__chart {
+    display: flex;
+    align-items: center;
+    height: 100%;
   }
 }

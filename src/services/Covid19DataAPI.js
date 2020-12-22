@@ -35,20 +35,16 @@ class Covid19DataAPI {
   // }
 
   async getHistoryGlobal() {
-    const historyData = await this.covidData.get(
-      `historical/all`
-    );
+    const historyData = await this.covidData.get(`historical/all?lastdays=365`);
     return historyData.data;
   }
 
   async getHistoryCountry(country) {
     const historyDataCountry = await this.covidData.get(
-      `historical/${country}`
+      `historical/${country}/?lastdays=365`
     );
     return historyDataCountry.data;
   }
-
-
 }
 
 export default Covid19DataAPI;

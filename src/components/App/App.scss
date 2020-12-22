@@ -7,6 +7,7 @@
   &__main {
     display: flex;
     height: calc(100vh - 80px);
+    overflow: hidden;
 
     @include mq(1024) {
       flex-wrap: wrap;

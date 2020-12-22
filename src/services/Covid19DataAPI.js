@@ -7,10 +7,10 @@ class Covid19DataAPI {
     });
   }
 
-  async getStatisticPerCountry() {
-    const summary = await this.getSummary();
-    return summary.Countries;
-  }
+  // async getStatisticPerCountry() {
+  //   const summary = await this.getSummary();
+  //   return summary.Countries;
+  // }
 
   // async getGlobalStatistic() {
   //   const summary = await this.getSummary();
@@ -27,18 +27,23 @@ class Covid19DataAPI {
     return countryList.data;
   }
 
-  async getOneCountryData(country) {
-    const countryData = await this.covidData.get(
-      `countries/${country}?strict=true`
-    );
-    return countryData.data;
+  // async getOneCountryData(country) {
+  //   const countryData = await this.covidData.get(
+  //     `countries/${country}?strict=true`
+  //   );
+  //   return countryData.data;
+  // }
+
+  async getHistoryGlobal() {
+    const historyData = await this.covidData.get(`historical/all?lastdays=365`);
+    return historyData.data;
   }
 
-  async getHistoryGlobal(days = 150) {
-    const historyData = await this.covidData.get(
-      `historical/all?lastdays=${days}`
+  async getHistoryCountry(country) {
+    const historyDataCountry = await this.covidData.get(
+      `historical/${country}/?lastdays=365`
     );
-    return historyData.data;
+    return historyDataCountry.data;
   }
 }
 

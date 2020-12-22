@@ -71,12 +71,8 @@ class Charts extends GlobalParent {
     const options = {
       tooltips: {
         callbacks: {
-          label: (tooltipItem, data) => {
-            return Number(tooltipItem.yLabel)
-                .toFixed(0)
-                .replace(/./g, (c, i, a) => {
-                  return i > 0 && c !== " " && (a.length - i) % 3 === 0 ? " " + c : c
-                });
+          label: (tooltipItem) => {
+            return Intl.NumberFormat().format(tooltipItem.yLabel)
           }
         },
       },
@@ -88,18 +84,16 @@ class Charts extends GlobalParent {
                 return Intl.NumberFormat().format(label);
               },
             },
-          },
-        ],
-        xAxes: [
-          {
-            type: 'time',
-            time: {
-              displayFormats: {
-                hour: 'MMM DD',
-              },
-            },
-          },
-        ],
+        }],
+        xAxes: [{
+          type: 'time',
+          time: {
+            tooltipFormat:'DD MMM YYYY',
+            displayFormats: {
+              day: 'MMM DD'
+            }
+          }
+        }],
       },
     };
 

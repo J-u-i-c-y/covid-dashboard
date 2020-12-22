@@ -14,9 +14,9 @@ class Current extends GlobalParent {
       ],
       navCurrentItems: [1, 0],
       currentTableRows: [
-        { name: 'количество случаев заболевания', key: 'cases' },
-        { name: 'количество летальных исходов', key: 'deaths' },
-        { name: 'количество выздоровевших', key: 'recovered' },
+        { name: 'Total cases', key: 'cases' },
+        { name: 'Total deaths', key: 'deaths' },
+        { name: 'Total recovered', key: 'recovered' },
       ],
     };
   }

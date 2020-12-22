@@ -1,23 +1,117 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './Charts.scss';
+import { Bar } from '@reactchartjs/react-chart.js';
 import GlobalParent from '../GlobalParent/GlobalParent';
 import ModuleNav from '../../Elements/ModuleNav/ModuleNav';
+import Current from '../Current/Current';
+import Covid19DataAPI from '../../../services/Covid19DataAPI';
+import keysForCharts from '../../../constants/keysForCharts';
 
 class Charts extends GlobalParent {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       title: 'Charts',
-      navItems: [
-        ['За последний день', 'За весь период пандемии'],
-        ['В абсолютных величинах', 'На 100 тыс. населения'],
+      navItems: [['Cases', 'Deaths', 'Recovered']],
+      navCurrentItems: [0],
+      history: {
+        cases: {},
+        deaths: {},
+        recovered: {},
+      },
+    };
+    this.covidDataAPI = new Covid19DataAPI();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { country } = this.props;
+    if (prevProps.country !== country) {
+      this.covidDataAPI.getHistoryCountry(country.country).then((resp) => {
+        this.setState({
+          history: resp.timeline,
+        });
+      });
+    }
+  }
+
+  componentDidMount() {
+    this.covidDataAPI.getHistoryGlobal().then((resp) => {
+      this.setState({
+        history: resp,
+      });
+    });
+  }
+
+  getChartData() {
+    const { navCurrentItems, history } = this.state;
+    const chartCurrentData = Object.entries(
+      history[keysForCharts[navCurrentItems[0]].key]
+    );
+    return {
+      labels: chartCurrentData.map(([date]) => date),
+      datasets: [
+        {
+          label: keysForCharts[navCurrentItems[0]].label,
+          data: chartCurrentData.map(([, value]) => value),
+          fill: false,
+          backgroundColor: keysForCharts[navCurrentItems[0]].backgroundColor,
+          borderColor: keysForCharts[navCurrentItems[0]].borderColor,
+        },
       ],
-      navCurrentItems: [0, 0],
     };
   }
 
   render() {
-    const { title, containerClassName, navItems, navCurrentItems } = this.state;
+    const { containerClassName, navItems, navCurrentItems } = this.state;
+    const { country } = this.props;
+
+    const data = this.getChartData();
+
+    const options = {
+      tooltips: {
+        callbacks: {
+          label: (tooltipItem, data) => {
+            return Number(tooltipItem.yLabel)
+                .toFixed(0)
+                .replace(/./g, (c, i, a) => {
+                  return i > 0 && c !== " " && (a.length - i) % 3 === 0 ? " " + c : c
+                });
+          }
+        },
+      },
+      scales: {
+        yAxes: [{
+            ticks: {
+              beginAtZero: true,
+              callback: (label) => {
+                return Intl.NumberFormat().format(label);
+              },
+            },
+          },
+        ],
+        xAxes: [
+          {
+            type: 'time',
+            time: {
+              displayFormats: {
+                hour: 'MMM DD',
+              },
+            },
+          },
+        ],
+      },
+    };
+
+    const BarChart = () => (
+      <>
+        <div className="header">
+          <div className="links">&nbsp;</div>
+        </div>
+        <Bar data={data} options={options} />
+      </>
+    );
+
     return (
       <div className="charts">
         <div className={`charts__container ${containerClassName}`}>
@@ -26,13 +120,25 @@ class Charts extends GlobalParent {
             navCurrentItems={navCurrentItems}
             toggleNavItem={this.toggleNavItem}
             toggleFullWin={this.toggleContainerClassName}
-            idx="chartNav"
+            idx="chartsNav"
           />
-          <p>{title}</p>
+          <h4>
+            Chart of&nbsp;
+            {keysForCharts[navCurrentItems[0]].key}
+            &nbsp;in&nbsp;
+            {country.country || 'Global Word'}
+          </h4>
+          <div className="charts__chart">
+            <BarChart />
+          </div>
         </div>
       </div>
     );
   }
 }
+
+Current.propTypes = {
+  country: PropTypes.objectOf(PropTypes.object),
+};
 
 export default Charts;

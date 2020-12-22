@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './Current.scss';
 import GlobalParent from '../GlobalParent/GlobalParent';
 import ModuleNav from '../../Elements/ModuleNav/ModuleNav';
@@ -69,7 +68,7 @@ class Current extends GlobalParent {
             cbChangeCurrentCountry={cbChangeCurrentCountry}
           />
           <h4>
-            Current cuntry is:&nbsp;
+            Current country is:&nbsp;
             {country.country || 'Global'}
           </h4>
           <div className="current__table">
@@ -80,9 +79,5 @@ class Current extends GlobalParent {
     );
   }
 }
-
-Current.propTypes = {
-  country: PropTypes.objectOf(PropTypes.object),
-};
 
 export default Current;

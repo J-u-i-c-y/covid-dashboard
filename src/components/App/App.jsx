@@ -26,7 +26,6 @@ class App extends Component {
   componentDidMount() {
     this.covidDataAPI.getSummaryWorld().then((data) => {
       // eslint-disable-next-line no-console
-      // console.log(data);
       this.setState({
         totalDeaths: data.deaths,
         totalCases: data.cases,
@@ -36,8 +35,6 @@ class App extends Component {
     });
 
     this.covidDataAPI.getCountryList().then((data) => {
-      // eslint-disable-next-line no-console
-      console.log('getCountryList', data[10]);
       this.setState({
         countries: data,
       });
@@ -47,11 +44,6 @@ class App extends Component {
       // afg.then((data) => {
       //   // console.log('afg', data);
       // })
-    });
-
-    this.covidDataAPI.getHistoryGlobal().then((resp) => {
-      // eslint-disable-next-line no-console
-      console.log('getHistoryGlobal', resp);
     });
   }
 
@@ -97,7 +89,7 @@ class App extends Component {
               cbChangeCurrentCountry={this.toggleCurrentCountry}
               globalWord={globalWord}
             />
-            <Charts />
+            <Charts country={country} />
           </div>
         </div>
       </div>

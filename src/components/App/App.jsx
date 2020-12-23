@@ -72,7 +72,10 @@ class App extends Component {
             />
           </div>
           <div className={('app__col', 'app__col--second')}>
-            <Map country={country} />
+            <Map 
+              country={country}
+              toggleCurrentCountry={this.toggleCurrentCountry}
+             />
           </div>
           <div className={('app__col', 'app__col--third')}>
             <Current country={{country}} />

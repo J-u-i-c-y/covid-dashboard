@@ -31,8 +31,6 @@ class Current extends GlobalParent {
     } = this.state;
     const { country } = this.props;
 
-    console.log(country);
-
     const getCurrentRow = (name, key) => {
       const item = country.country;
       let count = 0;

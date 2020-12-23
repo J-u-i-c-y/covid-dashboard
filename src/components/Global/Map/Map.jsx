@@ -63,6 +63,15 @@ class Map extends GlobalParent {
     });
   }
 
+  handlerClickCountry(id) {
+    const { countries } = this.state;
+    const { toggleCurrentCountry } = this.props;
+    let country = countries.find((el) => el.countryInfo.iso3 === id);
+    if(country) {
+      toggleCurrentCountry(country);
+    }
+  }
+
   onEachFeature = (feature, layer) => {
     const keys = ['cases', 'deaths', 'recovered'];
     const { countries, navCurrentItems } = this.state;
@@ -82,7 +91,10 @@ class Map extends GlobalParent {
             fillColor: "#000",
             fillOpacity: 0.3
         });
-      }
+      },
+      click: () => {
+        this.handlerClickCountry(feature.id);
+      },
     });
 
     layer.bindTooltip(

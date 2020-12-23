@@ -46,14 +46,12 @@ class Map extends GlobalParent {
       this.setState({
         countries: data,
       });
-      // eslint-disable-next-line no-console
-      console.log(this.state.countries[0]);
     });
   }
 
   componentDidUpdate(prevProps) {
     const { country } = this.props;
-    if (prevProps.country !== country) {
+    if (prevProps.country !== country && country.countryInfo) {
       this.setNewPosition(country.countryInfo.lat, country.countryInfo.long);
     }
   }
@@ -88,7 +86,7 @@ class Map extends GlobalParent {
     });
 
     layer.bindTooltip(
-      `${feature.properties.name}, ${key}: ${data}`,
+      `${feature.properties.name}, ${key}: ${data.toLocaleString()}`,
       {
         direction: 'right',
         permanent: false,

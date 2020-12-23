@@ -9,8 +9,8 @@ class Current extends GlobalParent {
     super(props);
     this.state = {
       navItems: [
-        ['За последний день', 'За весь период пандемии'],
-        ['В абсолютных величинах', 'На 100 тыс. населения'],
+        ['For the last day', 'Over the entire period'],
+        ['In absolute terms', 'Per 100 thousand population'],
       ],
       navCurrentItems: [1, 0],
       currentTableRows: [
@@ -29,13 +29,10 @@ class Current extends GlobalParent {
       navCurrentItems,
       currentTableRows,
     } = this.state;
-    const {
-      country,
-      globalWord,
-    } = this.props;
+    const { country } = this.props;
 
     const getCurrentRow = (name, key) => {
-      const item = country.country ? country : globalWord;
+      const item = country.country;
       let count = 0;
       if (navCurrentItems[0] === 1) {
         count = navCurrentItems[1] === 0 ? item[key] : item[keys[key][0]] / 10;
@@ -63,10 +60,7 @@ class Current extends GlobalParent {
             toggleFullWin={this.toggleContainerClassName}
             idx="currentNav"
           />
-          <h4>
-            Current country is:&nbsp;
-            {country.country || 'Global'}
-          </h4>
+          <h4>{`Current country is: ${country.country.country || 'Global'}`}</h4>
           <div className="current__table">
             {currentTableRows.map((row) => getCurrentRow(row.name, row.key))}
           </div>

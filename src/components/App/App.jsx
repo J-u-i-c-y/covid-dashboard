@@ -12,12 +12,11 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      country: { country: null },
+      country: {},
       countries: [],
       totalCases: 0,
       totalDeaths: 0,
       totalRecovered: 0,
-      globalWord: {},
     };
     this.covidDataAPI = new Covid19DataAPI();
     this.toggleCurrentCountry = this.toggleCurrentCountry.bind(this);
@@ -25,12 +24,11 @@ class App extends Component {
 
   componentDidMount() {
     this.covidDataAPI.getSummaryWorld().then((data) => {
-      // eslint-disable-next-line no-console
       this.setState({
         totalDeaths: data.deaths,
         totalCases: data.cases,
         totalRecovered: data.recovered,
-        globalWord: data,
+        country: data,
       });
     });
 
@@ -38,12 +36,6 @@ class App extends Component {
       this.setState({
         countries: data,
       });
-
-      // пример запрос для одно страны
-      // const afg = this.covidDataAPI.getOneCountryData(this.state.countries[0].countryInfo.iso3)
-      // afg.then((data) => {
-      //   // console.log('afg', data);
-      // })
     });
   }
 
@@ -58,7 +50,6 @@ class App extends Component {
       totalRecovered,
       country,
       countries,
-      globalWord,
     } = this.state;
 
     return (
@@ -84,10 +75,7 @@ class App extends Component {
             <Map country={country} />
           </div>
           <div className={('app__col', 'app__col--third')}>
-            <Current
-              country={country}
-              globalWord={globalWord}
-            />
+            <Current country={{country}} />
             <Charts country={country} />
           </div>
         </div>

@@ -546,6 +546,7 @@ export default class Vkey {
     });
     // подсветка вирт клав при нажатии реальной
     document.addEventListener('keydown', (e) => {
+      if (!this.VKEY.classList.contains('is-open')) return;
       const btn = this.VKEYBody.querySelectorAll(
         `[data-keycode="${e.keyCode}"]`
       );
@@ -579,6 +580,7 @@ export default class Vkey {
       if (btn[1]) btn[1].classList.add('active');
     });
     document.addEventListener('keyup', (e) => {
+      if (!this.VKEY.classList.contains('is-open')) return;
       const btn = this.VKEYBody.querySelectorAll(
         `[data-keycode="${e.keyCode}"]`
       );

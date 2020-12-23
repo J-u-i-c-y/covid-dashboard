@@ -26,7 +26,7 @@ class Charts extends GlobalParent {
 
   componentDidUpdate(prevProps) {
     const { country } = this.props;
-    if (prevProps.country !== country) {
+    if (prevProps.country !== country && country.countryInfo) {
       this.covidDataAPI.getHistoryCountry(country.country).then((resp) => {
         this.setState({
           history: resp.timeline,

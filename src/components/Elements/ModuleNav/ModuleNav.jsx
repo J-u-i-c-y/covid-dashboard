@@ -20,12 +20,7 @@ class ModuleNav extends Component {
   }
 
   componentDidMount() {
-    const { navItems, hasInput } = this.props;
-    if (navItems.length >= 2) {
-      navItems.forEach((group, groupId) => {
-        if (groupId < group.length - 1) group.push('separator');
-      });
-    }
+    const { hasInput } = this.props;
     if (hasInput) {
       this.vkey = new VKey('#country-input');
       this.vkey.init();

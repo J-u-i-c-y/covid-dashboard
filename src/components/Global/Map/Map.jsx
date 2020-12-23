@@ -186,7 +186,19 @@ class Map extends GlobalParent {
           />
           <div id="map" className="map__wrapper" key={`map-wrap-${navCurrentItems[0]}-${containerClassName}-${lat}`}>
             {renderMap()}
+            <div className="map__legend">
+              <div>
+                <div className="map__legend_statistics">Cases</div><div className="map__legend_color-cases"></div>
+              </div>
+              <div>
+                <div className="map__legend_statistics">Deaths</div><div className="map__legend_color-deaths"></div>
+              </div>
+              <div>
+                <div className="map__legend_statistics">Recovered</div><div className="map__legend_color-recovered"></div>
+              </div>
+            </div>
           </div>
+          
         </div>
       </div>
     );

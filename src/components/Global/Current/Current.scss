@@ -11,5 +11,33 @@
     height: 100%;
     padding: 5px;
     box-shadow: 0 0 48px 12px rgba($purple-color, 0.8)inset;
+
+    h4 {
+      text-align: center;
+      font-size: 24px;
+    }
+  }
+
+  &__container-subtitle {
+    padding: 5px 0;
+    text-align: center;
+    font-size: 13px;
+  }
+
+  &__table {
+    padding: 20px 10px 0;
+  }
+
+  &__row {
+    padding: 5px 0;
+
+    span {
+      font-weight: 700;
+    }
+
+    img {
+      width: 60px;
+      margin: 0 auto;
+    }
   }
 }

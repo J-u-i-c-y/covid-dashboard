@@ -31,6 +31,8 @@ class Current extends GlobalParent {
     } = this.state;
     const { country } = this.props;
 
+    console.log(country);
+
     const getCurrentRow = (name, key) => {
       const item = country.country;
       let count = 0;
@@ -45,10 +47,35 @@ class Current extends GlobalParent {
       count = count === undefined ? 0 : count;
       return (
         <div className="current__row" key={`curr-tab-r-${key}`}>
-          {`${name}: ${count.toLocaleString()}`}
+          {name}
+          :&nbsp;
+          <span>{count.toLocaleString()}</span>
         </div>
       );
     };
+
+    const getPopulationRow = () => {
+      let result = '';
+      if (country.country.population)
+      result = (
+        <div className="current__row">
+          Population :&nbsp;
+          <span>{country.country.population.toLocaleString()}</span>
+        </div>
+      );
+      return result;
+    }
+
+    const getCountryFlagRow = () => {
+      let result = '';
+      if (country.country.countryInfo)
+      result = (
+        <div className="current__row">
+          <img src={country.country.countryInfo.flag} alt=""/>
+        </div>
+      );
+      return result;
+    }
 
     return (
       <div className="current">
@@ -60,9 +87,14 @@ class Current extends GlobalParent {
             toggleFullWin={this.toggleContainerClassName}
             idx="currentNav"
           />
-          <h4>{`Current country is: ${country.country.country || 'Global'}`}</h4>
+          <h4>{`Current data for ${country.country.country || 'World'}:`}</h4>
+          <div className="current__container-subtitle">
+            {`(${navItems[0][navCurrentItems[0]].toLowerCase()} / ${navItems[1][navCurrentItems[1]].toLowerCase()})`}
+          </div>
           <div className="current__table">
             {currentTableRows.map((row) => getCurrentRow(row.name, row.key))}
+            {getPopulationRow()}
+            {getCountryFlagRow()}
           </div>
         </div>
       </div>

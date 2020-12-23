@@ -5,7 +5,7 @@ import './Map.scss';
 import { MapContainer, TileLayer, Marker, Popup, GeoJSON, Circle, Tooltip, useMapEvents, Polygon} from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import euCountries from '../../../counties.json';
+import euCountries from '../../../constants/counties.json';
 import Covid19DataAPI from '../../../services/Covid19DataAPI';
 import GlobalParent from '../GlobalParent/GlobalParent';
 import ModuleNav from '../../Elements/ModuleNav/ModuleNav';
@@ -46,7 +46,6 @@ class Map extends GlobalParent {
       this.setState({
         countries: data,
       });
-      // countriesArray = data;
       // eslint-disable-next-line no-console
       console.log(this.state.countries[0]);
     });
@@ -56,8 +55,6 @@ class Map extends GlobalParent {
     const { country } = this.props;
     if (prevProps.country !== country) {
       this.setNewPosition(country.countryInfo.lat, country.countryInfo.long);
-      // eslint-disable-next-line no-console
-      console.log('map - new country', [this.state.lat, this.state.lng]);
     }
   }
 
@@ -69,39 +66,37 @@ class Map extends GlobalParent {
   }
 
   onEachFeature = (feature, layer) => {
-    let countryFocus;
-    this.covidDataAPI.getCountryList().then((data) => {
-      layer.on({
-        mouseover: function (e) {
-            e.sourceTarget.setStyle({
-                fillColor: "#db2929",
-                fillOpacity: 0.5
-            });
-          },
-        mouseout: function (e) {
+    const keys = ['cases', 'deaths', 'recovered'];
+    const { countries, navCurrentItems } = this.state;
+    const key = keys[navCurrentItems[0]];
+    let data = 0;
+    let countryFocus = countries.find((el) => el.countryInfo.iso3 === feature.id);
+    if (countryFocus && countryFocus[key]) data = countryFocus[key];
+    layer.on({
+      mouseover: function (e) {
           e.sourceTarget.setStyle({
-              fillColor: "#000",
-              fillOpacity: 0.3
+              fillColor: "#db2929",
+              fillOpacity: 0.5
           });
-        }
-      });
+        },
+      mouseout: function (e) {
+        e.sourceTarget.setStyle({
+            fillColor: "#000",
+            fillOpacity: 0.3
+        });
+      }
+    });
 
-      data.forEach(element => {
-        if(element.country === feature.properties.name) {
-          countryFocus = element.casesPerOneMillion;
-        }
-      });
-      
-      layer.bindTooltip(`${feature.properties.name} ${countryFocus}`,{
+    layer.bindTooltip(
+      `${feature.properties.name}, ${key}: ${data}`,
+      {
         direction: 'right',
         permanent: false,
         sticky: true,
         offset: [10, 0],
         className: 'leaflet-tooltip'
-    });
-      // layer.bindPopup(`${feature.properties.name} ${countryFocus}`);
-    });
-    
+      }
+    );
   }
 
   clickToFeature = (e) => {
@@ -116,8 +111,9 @@ class Map extends GlobalParent {
       navItems,
       navCurrentItems,
       countries,
+      geodatas,
       lat,
-      lng,
+      lng
     } = this.state;
 
     const RenderCircle = () => {
@@ -154,6 +150,32 @@ class Map extends GlobalParent {
       ));
     };
 
+    const renderMap = () => {
+      let res = '';
+      if (countries.length > 0) {
+        res = (
+          <MapContainer
+            center={[lat, lng]}
+            zoom={this.state.zoom}
+            scrollWheelZoom
+            style={{ width: '100%' }}
+          >
+            <TileLayer
+              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png"
+            />
+            <GeoJSON
+              onEachFeature={this.onEachFeature}
+              pathOptions={purpleOptions}
+              data={geodatas}
+              />
+            <RenderCircle />
+          </MapContainer>
+        )
+      }
+      return res;
+    }
+
     return (
       <div className="map">
         <div className={`map__container ${containerClassName}`}>
@@ -164,24 +186,8 @@ class Map extends GlobalParent {
             toggleFullWin={this.toggleContainerClassName}
             idx="mapNav"
           />
-          <div id="map" className="map__wrapper">
-            <MapContainer
-              center={[lat, lng]}
-              zoom={this.state.zoom}
-              scrollWheelZoom
-              style={{ width: '100%' }}
-            >
-              <TileLayer
-                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png"
-              />
-              <GeoJSON 
-                onEachFeature={this.onEachFeature} 
-                pathOptions={purpleOptions} 
-                data={this.state.geodatas} 
-                />
-              <RenderCircle />
-            </MapContainer>
+          <div id="map" className="map__wrapper" key={`map-wrap-${navCurrentItems[0]}-${containerClassName}-${lat}`}>
+            {renderMap()}
           </div>
         </div>
       </div>

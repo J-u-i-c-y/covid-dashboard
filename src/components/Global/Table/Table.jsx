@@ -31,7 +31,7 @@ class Table extends GlobalParent {
 
   render() {
     const { containerClassName, navItems, navCurrentItems } = this.state;
-    const { countries, country } = this.props;
+    const { countries, country, cbChangeCurrentCountry } = this.props;
 
     const getCurrentDataOnKeys = (item, key) => {
       let res = 0;
@@ -82,6 +82,9 @@ class Table extends GlobalParent {
             toggleNavItem={this.toggleNavItem}
             toggleFullWin={this.toggleContainerClassName}
             idx="tableNav"
+            countries={countries}
+            hasInput
+            cbChangeCurrentCountry={cbChangeCurrentCountry}
           />
           <div className="table__wrapper">
             <table>

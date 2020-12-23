@@ -77,7 +77,8 @@ class Charts extends GlobalParent {
         },
       },
       scales: {
-        yAxes: [{
+        yAxes: [
+          {
             ticks: {
               beginAtZero: true,
               callback: (label) => {

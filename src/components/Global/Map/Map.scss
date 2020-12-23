@@ -9,4 +9,21 @@
   .leaflet-container {
     height: 100%;
   }
+
+  .module-nav {
+    margin: 0 0 3px;
+  }
+
+  .module-nav__menu-dropdown {
+    z-index: 3000;
+  }
+}
+
+.map__container {
+  padding: 5px;
+  height: 100%;
+}
+
+.map__wrapper {
+  height: calc(100% - 38px);
 }

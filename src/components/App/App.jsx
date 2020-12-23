@@ -12,7 +12,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      country: {},
+      country: { country: null },
       countries: [],
       totalCases: 0,
       totalDeaths: 0,
@@ -77,16 +77,15 @@ class App extends Component {
               country={country}
               countries={countries}
               toggleCurrentCountry={this.toggleCurrentCountry}
+              cbChangeCurrentCountry={this.toggleCurrentCountry}
             />
           </div>
           <div className={('app__col', 'app__col--second')}>
-            <Map />
+            <Map country={country} />
           </div>
           <div className={('app__col', 'app__col--third')}>
             <Current
               country={country}
-              countries={countries}
-              cbChangeCurrentCountry={this.toggleCurrentCountry}
               globalWord={globalWord}
             />
             <Charts country={country} />

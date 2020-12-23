@@ -17,6 +17,6 @@
   &__chart {
     display: flex;
     align-items: center;
-    height: 100%;
+    height: calc(100% - 50px);
   }
 }

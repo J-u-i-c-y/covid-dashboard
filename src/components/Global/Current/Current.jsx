@@ -18,6 +18,7 @@ class Current extends GlobalParent {
         { name: 'Total deaths', key: 'deaths' },
         { name: 'Total recovered', key: 'recovered' },
       ],
+      containerClassName: '',
     };
   }
 
@@ -30,8 +31,6 @@ class Current extends GlobalParent {
     } = this.state;
     const {
       country,
-      countries,
-      cbChangeCurrentCountry,
       globalWord,
     } = this.props;
 
@@ -63,9 +62,6 @@ class Current extends GlobalParent {
             toggleNavItem={this.toggleNavItem}
             toggleFullWin={this.toggleContainerClassName}
             idx="currentNav"
-            countries={countries}
-            hasInput
-            cbChangeCurrentCountry={cbChangeCurrentCountry}
           />
           <h4>
             Current country is:&nbsp;

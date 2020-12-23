@@ -71,17 +71,20 @@ class Charts extends GlobalParent {
     const options = {
       tooltips: {
         callbacks: {
-          label: (tooltipItem, data) => {
+          label: (tooltipItem) => {
             return Number(tooltipItem.yLabel)
-                .toFixed(0)
-                .replace(/./g, (c, i, a) => {
-                  return i > 0 && c !== " " && (a.length - i) % 3 === 0 ? " " + c : c
-                });
-          }
+              .toFixed(0)
+              .replace(/./g, (c, i, a) => {
+                return i > 0 && c !== ' ' && (a.length - i) % 3 === 0
+                  ? ` ${c}`
+                  : c;
+              });
+          },
         },
       },
       scales: {
-        yAxes: [{
+        yAxes: [
+          {
             ticks: {
               beginAtZero: true,
               callback: (label) => {

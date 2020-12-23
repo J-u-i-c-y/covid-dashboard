@@ -26,4 +26,34 @@
 
 .map__wrapper {
   height: calc(100% - 38px);
+  position: relative;
 }
+.map__wrapper .map__legend {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  padding: 10px;
+  border: 1px solid #C0C4CC;
+  box-shadow: 0 0 5px 1px #C0C4CC;
+  background: #eee;
+  z-index: 1000;
+}
+.map__wrapper .map__legend > div {
+  display: flex;
+  margin: 5px;
+}
+.map__wrapper .map__legend_statistics {
+  width: 75px;
+}
+
+.map__wrapper .map__legend_color-cases,
+.map__wrapper .map__legend_color-deaths,
+.map__wrapper .map__legend_color-recovered {
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  margin-left: 5px;
+}
+.map__wrapper .map__legend_color-cases {background-color: rgb(83,196,214);}
+.map__wrapper .map__legend_color-deaths {background-color:  rgb(202,1,1);}
+.map__wrapper .map__legend_color-recovered {background-color: rgb(189,19,222);}

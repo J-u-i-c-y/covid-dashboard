@@ -7,6 +7,7 @@
 
   &__container {
     padding: 5px;
+    box-shadow: 0 0 48px 12px rgba($purple-color, 0.8)inset;
 
     &:not(.is-open-full) {
       height: calc(100vh - 390px);

@@ -5,11 +5,11 @@
   height: 310px;
   background-color: rgba($purple-color, .1);
   color: darken($primary-color, 10%);
-  border: 1px solid #ddd;
 
   &__container {
     width: 100%;
     height: 100%;
     padding: 5px;
+    box-shadow: 0 0 48px 12px rgba($purple-color, 0.8)inset;
   }
 }

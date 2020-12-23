@@ -9,10 +9,11 @@ class Table extends GlobalParent {
     super(props);
     this.state = {
       navItems: [
-        ['За последний день', 'За весь период пандемии'],
-        ['В абсолютных величинах', 'На 100 тыс. населения'],
+        ['Cases', 'Deaths', 'Recovered'],
+        ['For the last day', 'Over the entire period'],
+        ['In absolute terms', 'Per 100 thousand population'],
       ],
-      navCurrentItems: [1, 0],
+      navCurrentItems: [0, 1, 0],
     };
   }
 
@@ -23,7 +24,7 @@ class Table extends GlobalParent {
 
   componentDidUpdate(prevProps) {
     const { country } = this.props;
-    if (prevProps.country !== country) {
+    if (prevProps.country !== country && country.countryInfo) {
       const elem = document.querySelector(`#${country.countryInfo.iso3}`);
       if (elem) elem.scrollIntoView({ behavior: 'smooth' });
     }
@@ -35,11 +36,11 @@ class Table extends GlobalParent {
 
     const getCurrentDataOnKeys = (item, key) => {
       let res = 0;
-      if (navCurrentItems[0] === 1) {
-        res = navCurrentItems[1] === 0 ? item[key] : item[keys[key][0]] / 10;
+      if (navCurrentItems[1] === 1) {
+        res = navCurrentItems[2] === 0 ? item[key] : item[keys[key][0]] / 10;
       } else {
         res =
-          navCurrentItems[1] === 0
+          navCurrentItems[2] === 0
             ? item[keys[key][1]]
             : (item[keys[key][1]] / item.population) * 100000;
       }
@@ -50,7 +51,9 @@ class Table extends GlobalParent {
       country.country === nameCountry ? 'is-current' : null;
 
     const getTableContent = () => {
-      const keySort = navCurrentItems[1] !== 1 ? 'cases' : 'casesPerOneMillion';
+      const key = navItems[0][navCurrentItems[0]].toLowerCase();
+      const keySort = key + (navCurrentItems[2] === 1 ? 'PerOneMillion' : '');
+
       return countries
         .sort((a, b) => b[keySort] - a[keySort])
         .map((item) => (
@@ -61,14 +64,12 @@ class Table extends GlobalParent {
             key={item.country}
           >
             <td>
-              <span className="table__flag if-open-full">
+              <span className="table__flag">
                 <img src={item.countryInfo.flag} alt="" />
               </span>
               {item.country}
             </td>
-            <td>{getCurrentDataOnKeys(item, 'cases')}</td>
-            <td>{getCurrentDataOnKeys(item, 'deaths')}</td>
-            <td>{getCurrentDataOnKeys(item, 'recovered')}</td>
+            <td>{getCurrentDataOnKeys(item, key)}</td>
           </tr>
         ));
     };
@@ -91,9 +92,7 @@ class Table extends GlobalParent {
               <thead>
                 <tr>
                   <th>Country</th>
-                  <th>Cases</th>
-                  <th>Deaths</th>
-                  <th>Recovered</th>
+                  <th>{navItems[0][navCurrentItems[0]]}</th>
                 </tr>
               </thead>
               <tbody className="table__body">{getTableContent()}</tbody>

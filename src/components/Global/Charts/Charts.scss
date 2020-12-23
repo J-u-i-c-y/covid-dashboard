@@ -12,11 +12,17 @@
     &:not(.is-open-full) {
       height: calc(100vh - 390px);
     }
+
+    h4 {
+      margin: 20px 0 0;
+      text-align: center;
+      font-size: 21px;
+    }
   }
 
   &__chart {
     display: flex;
     align-items: center;
-    height: calc(100% - 50px);
+    height: calc(100% - 75px);
   }
 }

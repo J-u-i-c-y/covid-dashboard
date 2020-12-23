@@ -72,13 +72,13 @@ class App extends Component {
             />
           </div>
           <div className={('app__col', 'app__col--second')}>
-            <Map 
+            <Map
               country={country}
               toggleCurrentCountry={this.toggleCurrentCountry}
-             />
+            />
           </div>
           <div className={('app__col', 'app__col--third')}>
-            <Current country={{country}} />
+            <Current country={{ country }} />
             <Charts country={country} />
           </div>
         </div>

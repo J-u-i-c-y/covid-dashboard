@@ -54,26 +54,28 @@ class Current extends GlobalParent {
 
     const getPopulationRow = () => {
       let result = '';
-      if (country.country.population)
-      result = (
-        <div className="current__row">
-          Population :&nbsp;
-          <span>{country.country.population.toLocaleString()}</span>
-        </div>
-      );
+      if (country.country.population) {
+        result = (
+          <div className="current__row">
+            Population :&nbsp;
+            <span>{country.country.population.toLocaleString()}</span>
+          </div>
+        );
+      }
       return result;
-    }
+    };
 
     const getCountryFlagRow = () => {
       let result = '';
-      if (country.country.countryInfo)
-      result = (
-        <div className="current__row">
-          <img src={country.country.countryInfo.flag} alt=""/>
-        </div>
-      );
+      if (country.country.countryInfo) {
+        result = (
+          <div className="current__row">
+            <img src={country.country.countryInfo.flag} alt="" />
+          </div>
+        );
+      }
       return result;
-    }
+    };
 
     return (
       <div className="current">
@@ -87,7 +89,9 @@ class Current extends GlobalParent {
           />
           <h4>{`Current data for ${country.country.country || 'World'}:`}</h4>
           <div className="current__container-subtitle">
-            {`(${navItems[0][navCurrentItems[0]].toLowerCase()} / ${navItems[1][navCurrentItems[1]].toLowerCase()})`}
+            {`(${navItems[0][navCurrentItems[0]].toLowerCase()} / ${navItems[1][
+              navCurrentItems[1]
+            ].toLowerCase()})`}
           </div>
           <div className="current__table">
             {currentTableRows.map((row) => getCurrentRow(row.name, row.key))}

@@ -5,6 +5,10 @@
   height: calc(100% - 150px);
   border: 1px solid #ddd;
 
+  @include mq (768) {
+    height: 400px;
+  }
+
   &__container {
     height: 100%;
     padding: 5px 5px 10px;

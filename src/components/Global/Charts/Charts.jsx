@@ -72,8 +72,8 @@ class Charts extends GlobalParent {
       tooltips: {
         callbacks: {
           label: (tooltipItem) => {
-            return Intl.NumberFormat().format(tooltipItem.yLabel)
-          }
+            return Intl.NumberFormat().format(tooltipItem.yLabel);
+          },
         },
       },
       scales: {
@@ -85,16 +85,19 @@ class Charts extends GlobalParent {
                 return Intl.NumberFormat().format(label);
               },
             },
-        }],
-        xAxes: [{
-          type: 'time',
-          time: {
-            tooltipFormat:'DD MMM YYYY',
-            displayFormats: {
-              day: 'MMM DD'
-            }
-          }
-        }],
+          },
+        ],
+        xAxes: [
+          {
+            type: 'time',
+            time: {
+              tooltipFormat: 'DD MMM YYYY',
+              displayFormats: {
+                day: 'MMM DD',
+              },
+            },
+          },
+        ],
       },
     };
 
